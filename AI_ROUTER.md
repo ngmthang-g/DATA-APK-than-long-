@@ -1,73 +1,55 @@
-# AI Router — route mobile automation tasks before deep reading
+# AI Router — mobile automation tool
 
 Read `AI_BOOTSTRAP.md` and `AUTO_TOOL_SCOPE.md` first.
 
 | Task | Primary context pack |
 |---|---|
-| EXE architecture, LD discovery, multi-instance isolation, state machine | `contexts/BUILD_TOOL_CORE.md` |
-| Read HP/map/position/death/bag/target state | `contexts/BUILD_RUNTIME_SCANNER.md` |
-| Safely execute Unity/IL2CPP mutable calls | `contexts/BUILD_MAINTHREAD_BRIDGE.md` |
-| Auto Train / enemy / chase / skill / return spot | `contexts/BUILD_AUTO_TRAIN.md` |
-| Death / Đầu thai / return to map | `contexts/BUILD_AUTO_REVIVE.md` |
-| Bag full / vendor / item filtering / sell | `contexts/BUILD_AUTO_SELL.md` |
-| Train + Revive + Sell + multi-LD arbitration | `contexts/BUILD_ORCHESTRATOR.md` |
+| EXE/LD9 architecture, session isolation, orchestration | `contexts/BUILD_TOOL_CORE.md` |
+| HP/map/position/death/bag/target scanner | `contexts/BUILD_RUNTIME_SCANNER.md` |
+| Unity/IL2CPP action bridge / MainThread | `contexts/BUILD_MAINTHREAD_BRIDGE.md` |
+| Auto Train / target / chase / skill / return center | `contexts/BUILD_AUTO_TRAIN.md` |
+| Death / Đầu thai / return map | `contexts/BUILD_AUTO_REVIVE.md` |
+| Bag full / vendor / shop / sell | `contexts/BUILD_AUTO_SELL.md` |
+| NPC Trị liệu / GameDialog | `contexts/BUILD_AUTO_HEAL.md` |
+| Auto chat / channel / @GOTO ping | `contexts/BUILD_AUTO_CHAT.md` |
+| Cross-feature state machine / many LD9 | `contexts/BUILD_ORCHESTRATOR.md` |
 
-## Compact lookup first
+## Exact-action questions
 
-Before opening deep analysis:
+Start with:
 
-- `research/VERIFIED_APK_SNAPSHOT.md`
-- `AUTO_FEATURE_READINESS.md`
-- `database/AUTO_TOOL_API_CATALOG.md`
+- `database/AUTO_ACTION_EXACT_FLOWS.md`
 - `database/AUTO_TOOL_ACTION_CATALOG.md`
-- `database/FACTS.jsonl`
-- `research/AUTO_RUNTIME_PROOF_QUEUE.md`
+- `database/PACKET_IDS_LUA_MOBILE.csv`
 
-## Exact network action question
+Do not reopen binary reverse for facts already solved by recovered Lua.
 
-If asking “packet/hàm nào thực sự gửi hành động”:
+## Auto Train
 
-1. check `database/AUTO_TOOL_ACTION_CATALOG.md`;
-2. if status is TARGETED-PROOF, inspect only `analysis/02_LUA_GAME_UI_NETWORK_API.md` plus related feature doc;
-3. trace one manual action at `SendPacketToServer` / `SendPacket` / `TCPGame` boundary on LD9;
-4. record exact packet/payload and success proof;
-5. update FACTS/catalog/feature status.
+Read `analysis/13_BUILTIN_AUTO_TRAIN_ENGINE.md`. Mobile `StartAutoFight(C_AutoModel.Train)` is now independently source-verified; it is no longer PC-donor-only.
 
-Do not reverse all UI bundles first.
+## Revive
 
-## PC comparison question
+Read `analysis/14_REVIVE_RETURN_MAP_ENGINE.md`. Exact normal request is now mobile-verified `200063:"1"`. Remaining work is runtime bridge/server completion proof, not payload discovery.
 
-Use `analysis/08_PC_MOBILE_CROSSWALK.md`.
+## Auto Sell
 
-PC facts may guide exact symbol/packet search, but numeric packet IDs and payloads remain mobile-unverified until recovered from APK producer/runtime trace.
+Read `analysis/15_INVENTORY_NPCSHOP_AUTO_SELL.md`. Exact mobile request is now `200036` with `itemInstanceID:NpcShopID:ShopID`. Do not rediscover the packet. Runtime work should verify vendor/current shop and removal lifecycle.
 
-## Inventory question
+## Treatment
 
-Use:
+Read `analysis/16_GAMEDIALOG_NPC_TREATMENT.md`. Match runtime selection text and use actual `selectionID:-1`; do not hardcode screen coordinates or a guessed selection ID.
 
-- `contexts/BUILD_AUTO_SELL.md`
-- `analysis/04_INVENTORY_ITEMS_SHOP.md`
-- live semantic item fields / API catalog.
+## Chat / ping
 
-Do not count bag cells by image unless semantic bag APIs fail.
+Read `analysis/17_CHAT_CHANNEL_AND_GOTO_AUTOMATION.md`. Use `CMD_CLIENT_CHAT=100008` and `@GOTO_MapID_GridX_GridY`; do not automate Windows keyboard focus unless semantic action is unavailable.
 
-## Map/NPC question
+## PC comparison
 
-Use `analysis/03_WORLD_ENTITY_MAP_PATH.md` and `database/AUTO_TOOL_API_CATALOG.md`.
+Use PC data as a Config/static identity donor where the APK snapshot does not embed current config tables. Never reuse Windows RVA/offsets. Promote a PC donor fact to mobile VERIFIED only with mobile static/runtime evidence.
 
-Prefer `GetNPCPosition`, `GoTo`, `ClickNPC`, auto-path state. Do not invent pixel coordinates.
+## Crash/diss
 
-## Crash/diss during internal action
+First inspect MainThread/action ownership/session generation. Do not solve instability by adding more arbitrary sleeps or concurrent worker actions.
 
-Use:
-
-1. `contexts/BUILD_MAINTHREAD_BRIDGE.md`
-2. `analysis/07_MAIN_THREAD_DISPATCHER.md`
-3. `analysis/05_LD9_HOST_GUEST_ARCHITECTURE.md`
-4. per-instance action gate logs.
-
-First suspects: wrong thread, stale managed/native object, overlapping actions, map/UI generation change, invalid payload, unrooted managed delegate.
-
-## Hard routing rule
-
-**Route → lookup → targeted proof. Do not broad-reverse the whole APK because one exact action is still unknown.**
+**Hard rule: route -> compact exact fact -> targeted runtime proof.**
