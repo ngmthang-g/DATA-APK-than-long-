@@ -19,7 +19,38 @@ This directory is for implementation lookup, not long narrative reverse-engineer
 ## Inventory / Sell
 
 - `AUTO_SELL_CLASSIFICATION.md` — conservative KEEP/SELL/DROP/DESTROY classification contract.
+- `ITEM_SITES_MOBILE.csv` — Bag/Body/Mount/Storage/Fashion/Gem/etc. site IDs.
+- `EQUIP_POSITIONS_MOBILE.csv` — equipment positions; mobile Weapon position is exactly 0.
 - `AUTO_TOOL_ACTION_CATALOG.md` — exact Sell packet and mutation contract.
+- canonical bag scanner row contract: `../analysis/31_BAG_SCANNER_DATA_CONTRACT.md`.
+
+Important mobile weapon rule:
+
+```text
+Game.GetItemType(ItemID) == "Equip"
+AND Game.GetEquipType(ItemID) == 0
+```
+
+Recovered Lua proves `Game.GetEquipType()` is operationally compared against `C_EquipPosition`, not the misleadingly named `C_EquipType` family enum. Do not use `<10 => weapon`.
+
+## NPC / transactions
+
+- canonical stable-vs-live NPC identity strategy: `../analysis/30_NPC_DISCOVERY_IDENTITY_RUNTIME.md`.
+- dynamic dialog/shop/revival copy contract: `../analysis/28_DYNAMIC_TRANSACTION_SNAPSHOT_CONTRACT.md`.
+
+Do not persist live NPC RoleID, current GameDialog selectionID, current ShopID/NpcShopID or Lua UI pointers as profile identity.
+
+## Coordinates
+
+Canonical grid/world contract: `../analysis/29_COORDINATE_DOMAINS_GRID_WORLD.md`.
+
+Visible map coordinates and movement world coordinates are different domains. Use the game's `WorldToGridPosition` / `GridToWorldPosition` rather than host-side guessed multiplication.
+
+## Target / nearby-player scanner
+
+Canonical schema: `../analysis/32_RUNTIME_TARGET_SCANNER.md`.
+
+Mobile `LuaMapSpriteData` exposes/inherits semantic RoleID/ResID/Name/Type/Position/IsDeath/HP/MaxHP/Level/Faction/Guild/Team data. The stock nearby-player UI independently uses HP/MaxHP directly.
 
 ## Chat
 
@@ -43,6 +74,8 @@ Do not place external vendor/shop/dialog transaction IDs or live item instance I
 
 - `RUNTIME_SNAPSHOT_SCHEMA.md` — original compact snapshot draft.
 - canonical expanded state/generation contract: `../analysis/18_RUNTIME_ROLE_BAG_SNAPSHOT.md`.
+- central inbound observer: `../analysis/26_LUA_PACKET_EVENT_OBSERVER.md`.
+- dynamic transaction generations: `../analysis/28_DYNAMIC_TRANSACTION_SNAPSHOT_CONTRACT.md`.
 - state/action/proof orchestration: `../analysis/27_AUTO_STATE_ACTION_PROOF_MATRIX.md`.
 
 ## Evidence rule
