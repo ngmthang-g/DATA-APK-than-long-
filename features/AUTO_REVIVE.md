@@ -1,72 +1,33 @@
-# Feature Specification — Auto Revive / Đầu thai
+# Feature — Auto Revive / Đầu thai / quay lại bãi
 
-Status: **death/revive state surface STATIC-STRONG; exact outbound revive request TARGETED-PROOF**.
+Status: **EXACT MOBILE REQUEST + BUILT-IN COMEBACK DONOR SOLVED STATIC; runtime proof pending**
 
-## Static evidence
-
-Mobile metadata contains:
+## Normal revive
 
 ```text
-IsDeath
-ProcessObjectDeath
-ProcessObjectRevive
-CMD_REVIVE
+CMD_REVIVE_DATA = 200063
+C_RevivalType.Normal = 1
+payload = "1"
 ```
 
-Player/world state also exposes HP/map/position/map-ready concepts.
+Newbie=`"2"`, skill revive=`"3"`.
 
-## State machine
+## Stock donor
+
+`AutoFight_Main:DeathActive()` records death map/position, optionally sends normal revive and enables `IsComeBackTrain`. `ComeBackTrainData()` returns via `Game.GoTo`, with special handling for infernal Map 87.
+
+## Recommended external state proof
 
 ```text
-TRAINING
- -> death observed
- -> REVIVE_WAIT_READY
- -> REVIVE_REQUEST (one action)
- -> REVIVE_PROOF
- -> RETURN_TO_SPOT
- -> TRAIN_RESUME
+DEAD
+ -> one revive request
+ -> alive/HP/Revival proof
+ -> IsMapReady
+ -> return saved TrainMap/TrainPos
+ -> position tolerance
+ -> resume Train
 ```
 
-## Death proof
+Do not clone the stock fixed waits as success proof.
 
-Prefer semantic death state (`IsDeath` / HP + role state) rather than looking for a death dialog image.
-
-## Exact request boundary
-
-Do not send a guessed packet.
-
-Required proof:
-
-```text
-manual normal revive once
- -> capture outbound producer at SendPacketToServer / SendPacket / TCPGame
- -> exact command ID + payload/type
- -> repeat capture
-```
-
-PC donor: PC KB has `CMD_REVIVE_DATA=200063` and revive-type semantics. This is a search hint only until mobile confirms it.
-
-## Completion proof
-
-After one revive action, require a fresh snapshot showing a consistent alive state, e.g.:
-
-```text
-IsDeath == false
-HP > 0
-IsMapReady == true
-valid current MapID/Position
-```
-
-Then begin return path. Do not equate packet send success with character revival.
-
-## Return-to-spot
-
-Use saved per-session train map/position and semantic `GoTo`/auto-path APIs. Resume Train only after the expected map is ready and position is within tolerance.
-
-## Retry policy
-
-Retry only after timeout/fresh state proves no completion. Do not spam revive commands while a transition is already in progress.
-
-## Multi-LD rule
-
-A death/revive state is local to exactly one BotSession. It must not pause or mutate other LD9 sessions unless the user selected a global pause.
+Canonical: `analysis/14_REVIVE_RETURN_MAP_ENGINE.md`.
