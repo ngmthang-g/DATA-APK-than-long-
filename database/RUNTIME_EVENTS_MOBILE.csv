@@ -1,0 +1,20 @@
+source,event_name,id,data_shape,automation_use,status
+LuaCoreEvent,UpdateMoney,0,client object/event data,money/shop/treatment proof,VERIFIED_STATIC
+LuaCoreEvent,AddItem,1,client event data,bag version/invalidation,VERIFIED_STATIC
+LuaCoreEvent,RemoveItem,2,site:dbID:position,sell/drop/use/destroy proof,VERIFIED_STATIC
+LuaCoreEvent,UpdateItemsList,3,client event data,force fresh bag rescan,VERIFIED_STATIC
+LuaCoreEvent,BeginProgress,12,client event data,busy/progress guard,VERIFIED_STATIC
+LuaCoreEvent,InteruptProgress,13,client event data,progress failure/interrupt,VERIFIED_STATIC
+LuaCoreEvent,UpdateProgressTime,14,client event data,progress snapshot,VERIFIED_STATIC
+LuaCoreEvent,AddBuff,15,client event data,buff snapshot invalidation,VERIFIED_STATIC
+LuaCoreEvent,UpdateBuff,16,client event data,buff snapshot invalidation,VERIFIED_STATIC
+LuaCoreEvent,RemoveBuff,17,client event data,buff snapshot invalidation,VERIFIED_STATIC
+LuaCoreEvent,OpenPickUpItemFromItemPack,18,item-pack client data,loot transaction start,VERIFIED_STATIC
+LuaCoreEvent,ClosePickUpItemFromItemPack,19,item-pack client data,loot transaction end,VERIFIED_STATIC
+LuaCoreEvent,UpdateTeamData,47,client team data,team snapshot invalidation,VERIFIED_STATIC
+LuaCoreEvent,ChatEvent,50,chat client data,chat telemetry/response,VERIFIED_STATIC
+LuaCoreEvent,PKWarning,51,client event data,safety/combat telemetry,VERIFIED_STATIC
+LuaCoreEvent,NewCaptcha,57,captcha client data,pause mutable auto/manual handling,VERIFIED_STATIC
+LuaPacket,CMD_SHOW_GAMEDIALOG,100007,gameDialogData,copy dialog generation/selections,VERIFIED_STATIC
+LuaPacket,CMD_NPC_SHOP_DATA,200034,shopData,copy current shop/NpcShopID/ShopID/IsGuildShop,VERIFIED_STATIC
+LuaPacket,CMD_REVIVE_DATA,200063,revivalData,copy revival generation/lifecycle,VERIFIED_STATIC
