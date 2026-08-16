@@ -1,0 +1,24 @@
+name,id,status,automation_use
+Body,0,VERIFIED_STATIC,equipped player items
+Pet,1,VERIFIED_STATIC,equipped pet items
+Mount,2,VERIFIED_STATIC,mount inventory/current mount validation
+Pneuma,3,VERIFIED_STATIC,equipped pneuma
+WeaponVisual,4,VERIFIED_STATIC,weapon visual equipment
+Pet_Reserved_1,5,VERIFIED_STATIC,pet reserved slot group
+Pet_Reserved_2,6,VERIFIED_STATIC,pet reserved slot group
+Pet_Reserved_3,7,VERIFIED_STATIC,pet reserved slot group
+Bag,10,VERIFIED_STATIC,main bag / Auto Sell / Recovery
+Storage,11,VERIFIED_STATIC,storage page 1
+Storage_2,12,VERIFIED_STATIC,storage page 2
+Storage_3,13,VERIFIED_STATIC,storage page 3
+Storage_4,14,VERIFIED_STATIC,storage page 4
+Storage_5,15,VERIFIED_STATIC,storage page 5
+NormalGemBag,16,VERIFIED_STATIC,normal gem bag
+UniversalGemBag,17,VERIFIED_STATIC,universal gem bag
+FashionGemBag,18,VERIFIED_STATIC,fashion gem bag
+FashionBag,19,VERIFIED_STATIC,fashion bag
+WeaponVisualGemBag,20,VERIFIED_STATIC,weapon visual gem bag
+SoulStoneBag,21,VERIFIED_STATIC,soul stone bag
+PneumaBag,22,VERIFIED_STATIC,pneuma bag
+Stall,100,VERIFIED_STATIC,player stall
+Trade,200,VERIFIED_STATIC,trade window
