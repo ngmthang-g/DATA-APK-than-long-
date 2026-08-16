@@ -1,0 +1,221 @@
+source_asset,function,parameters,domain
+AutoFight_Main.lua,AutoFight_Main:Initialize,,ui_or_core
+AutoFight_Main.lua,AutoFight_Main:GetEventStatus,Data,ui_or_core
+AutoFight_Main.lua,AutoFight_Main:PkAgian,,pk
+AutoFight_Main.lua,AutoFight_Main:PkTriger,AttackID,pk
+AutoFight_Main.lua,AutoFight_Main:AreletService,,ui_or_core
+AutoFight_Main.lua,AutoFight_Main:TimeTick,"Name, Value",ui_or_core
+AutoFight_Main.lua,AutoFight_Main:TurnOnFollowTarget,RoleID,follow
+AutoFight_Main.lua,AutoFight_Main:TurnOffFollow,,follow
+AutoFight_Main.lua,AutoFight_Main:ScanObject,,ui_or_core
+AutoFight_Main.lua,AutoFight_Main:GetMemberInRadaMapData,,ui_or_core
+AutoFight_Main.lua,AutoFight_Main:GetMemberInBackUpData,,ui_or_core
+AutoFight_Main.lua,AutoFight_Main:GetAutoTrainConfig,,train
+AutoFight_Main.lua,AutoFight_Main:GetAutoHpConfig,,recovery
+AutoFight_Main.lua,AutoFight_Main:GetAutoUtilities,,ui_or_core
+AutoFight_Main.lua,AutoFight_Main:SaveAutoSettings,,settings
+AutoFight_Main.lua,AutoFight_Main:GetAutoPk,,pk
+AutoFight_Main.lua,AutoFight_Main:SetPetAttackModel,AttackModel,pet
+AutoFight_Main.lua,AutoFight_Main:GetPickUpConfig,,loot
+AutoFight_Main.lua,AutoFight_Main:GetAutoPetConfig,,pet
+AutoFight_Main.lua,AutoFight_Main:SetSkillTrainList,,train
+AutoFight_Main.lua,AutoFight_Main:SetBuffSkillList,,skill
+AutoFight_Main.lua,AutoFight_Main:SetSkillPK,,pk
+AutoFight_Main.lua,AutoFight_Main:GetModelText,attackModel,ui_or_core
+AutoFight_Main.lua,AutoFight_Main:ResetDefaultSettings,,settings
+AutoFight_Main.lua,AutoFight_Main:LoadAutoConfig,,settings
+AutoFight_Main.lua,AutoFight_Main:GetCustomChatChannels,,chat
+AutoFight_Main.lua,AutoFight_Main:SetCustomChatChannels,channelIDsString,chat
+AutoFight_Main.lua,AutoFight_Main:GetLastChatBoxDisplayChannel,,chat
+AutoFight_Main.lua,AutoFight_Main:SetLastChatBoxDisplayChannel,channelID,chat
+AutoFight_Main.lua,AutoFight_Main:GetLastChatChannel,,chat
+AutoFight_Main.lua,AutoFight_Main:SetLastChatChannel,channelID,chat
+AutoFight_Main.lua,AutoFight_Main:SaveSetting,,settings
+AutoFight_Main.lua,AutoFight_Main:DefaultSettings,,settings
+AutoFight_Main.lua,AutoFight_Main:BoolToInt,Check,settings
+AutoFight_Main.lua,AutoFight_Main:IntToBool,Check,settings
+AutoFight_Main.lua,AutoFight_Main:StopAllCurrentTask,,ui_or_core
+AutoFight_Main.lua,AutoFight_Main:StartAutoFight,AutoModel,train
+AutoFight_Main.lua,AutoFight_Main:PickPkSkillReady,,pk
+AutoFight_Main.lua,AutoFight_Main:PickTrainSkillReady,Type,train
+AutoFight_Main.lua,AutoFight_Main:DoPickItem,,loot
+AutoFight_Main.lua,AutoFight_Main:IsPickByAuto,itemPackID,loot
+AutoFight_Main.lua,AutoFight_Main:RevicePackItemData,"itemPackID, items",loot
+AutoFight_Main.lua,AutoFight_Main:AutoFollow,,follow
+AutoFight_Main.lua,AutoFight_Main:BandTargetActive,RoleID,ui_or_core
+AutoFight_Main.lua,AutoFight_Main:IsDoneKillMonsterQuest,,ui_or_core
+AutoFight_Main.lua,AutoFight_Main:DeathActive,,revive_return
+AutoFight_Main.lua,AutoFight_Main:DoAutoRegen,,recovery
+AutoFight_Main.lua,AutoFight_Main:DoAutoBuff,,skill
+AutoFight_Main.lua,AutoFight_Main:DoAutoPet,,pet
+AutoFight_Main.lua,AutoFight_Main:DoAutoSprit,,pet
+AutoFight_Main.lua,AutoFight_Main:FindAutoPKTarget,,pk
+AutoFight_Main.lua,AutoFight_Main:SetLockTarget,target,ui_or_core
+AutoFight_Main.lua,AutoFight_Main:AutoPkStart,,pk
+AutoFight_Main.lua,AutoFight_Main:ComeBackTrainData,,revive_return
+AutoFight_Main.lua,AutoFight_Main:AutoTrainStart,,train
+AutoFight_Main.lua,AutoFight_Main:FollowTargetClick,,follow
+AutoFight_Main.lua,AutoFight_Main:ProcessGameDialog,gameDialogData,dialog_npc
+AutoFight_Main.lua,AutoFight_Main:PutGameDialog,gameDialogData,dialog_npc
+AutoFight_Main.lua,AutoFight_Main:GetTaskCanAuToTask,,ui_or_core
+AutoFight_Main.lua,AutoFight_Main:ReloadTaskDoing,,ui_or_core
+AutoFight_Main.lua,AutoFight_Main:GoToMonster,"mapID, monsterID",movement
+AutoFight_Main.lua,AutoFight_Main:CheckCanRiderUP,,movement
+AutoFight_Main.lua,AutoFight_Main:RiderUp,,movement
+AutoFight_Main.lua,AutoFight_Main:GoToNPC,"mapID, npcID",dialog_npc
+AutoFight_Main.lua,AutoFight_Main:AutoMainQuest,,ui_or_core
+AutoFight_Main.lua,AutoFight_Main:GetFirstPet,,pet
+AutoFight_Main.lua,AutoFight_Main:ShowAnimation,AutoMode,ui_or_core
+AutoFight_Main.lua,AutoFight_Main:GetCurrentPosition,,movement
+AutoFight_Main.lua,AutoFight_Main:FindBestTarget,,train
+NPCShop.lua,NPCShop:Initialize,shopData,shop_sell
+NPCShop.lua,NPCShop:InitializeComponents,shopData,shop_sell
+NPCShop.lua,NPCShop:RefreshData,shopData,shop_sell
+NPCShop.lua,NPCShop:ButtonCloseClicked,,shop_sell
+NPCShop.lua,NPCShop:ToggleTabHeaderSelected,uiToggle,shop_sell
+NPCShop_SellItemTab.lua,NPCShop_SellItemTab:Initialize,,shop_sell
+NPCShop_SellItemTab.lua,NPCShop_SellItemTab:InitializeComponents,,shop_sell
+NPCShop_SellItemTab.lua,NPCShop_SellItemTab:SetData,shopData,shop_sell
+NPCShop_SellItemTab.lua,NPCShop_SellItemTab:ButtonItemIconClicked,uiButton,shop_sell
+NPCShop_SellItemTab.lua,NPCShop_SellItemTab:ButtonBuyBackItemClicked,uiButton,shop_sell
+NPCShop_SellItemTab.lua,NPCShop_SellItemTab:RequestSellItem,dbItemData,shop_sell
+GameDialog.lua,GameDialog:Initialize,gameDialogData,dialog_npc
+GameDialog.lua,GameDialog:InitializeComponents,gameDialogData,dialog_npc
+GameDialog.lua,GameDialog:SetSelectItem,"uiItemButton, itemID",dialog_npc
+GameDialog.lua,GameDialog:ButtonCloseClicked,,dialog_npc
+GameDialog.lua,GameDialog:FunctionButtonClicked,uiButton,dialog_npc
+GameDialog.lua,GameDialog:UpdateVisible,,dialog_npc
+GameDialog.lua,GameDialog:ButtonSkillClicked,uiButton,skill
+Revival.lua,Revival:Initialize,data,revive_return
+Revival.lua,Revival:InitializeComponents,,revive_return
+Revival.lua,Revival:DoCountDown,,revive_return
+Revival.lua,Revival:UpdateData,data,revive_return
+Revival.lua,Revival:ButtonNewbieReviveClicked,,revive_return
+Revival.lua,Revival:ButtonSkillReviveClicked,,revive_return
+Revival.lua,Revival:ButtonGoToInfernalClicked,,revive_return
+Revival.lua,Revival:AutoClose,,revive_return
+Revival.lua,Revival:ButtonOpenChatBoxClicked,,chat
+ChatBox.lua,ChatBox:Initialize,,chat
+ChatBox.lua,ChatBox:InitializeComponents,,chat
+ChatBox.lua,ChatBox:InitializeChannels,,chat
+ChatBox.lua,ChatBox:RebuildSelectChatChannel,,chat
+ChatBox.lua,ChatBox:RebuildChatChannels,,chat
+ChatBox.lua,ChatBox:ReloadCustomChannels,,chat
+ChatBox.lua,ChatBox:StartPrivateChatChannels,,chat
+ChatBox.lua,ChatBox:GetMessages,,chat
+ChatBox.lua,ChatBox:ButtonSetCustomChannelClicked,,chat
+ChatBox.lua,ChatBox:AppendChat,chatData,chat
+ChatBox.lua,ChatBox:ReloadData,,chat
+ChatBox.lua,ChatBox:InsertSticker,stickerID,chat
+ChatBox.lua,ChatBox:RebuildStickingString,,chat
+ChatBox.lua,ChatBox:AddStickItem,itemDBID,chat
+ChatBox.lua,ChatBox:AddStickPet,petDBID,chat
+ChatBox.lua,ChatBox:ButtonCloseClicked,,chat
+ChatBox.lua,ChatBox:DisplayChatChannelSelected,,chat
+ChatBox.lua,ChatBox:ButtonSendLocationClicked,,chat
+ChatBox.lua,ChatBox:ButtonOpenStickersFrameClicked,,chat
+ChatBox.lua,ChatBox:ButtonClearAllMessagesClicked,,chat
+ChatBox.lua,ChatBox:ButtonClearStickingClicked,,chat
+ChatBox.lua,ChatBox:ButtonSendMessageClicked,,chat
+AutoHp.lua,AutoHp:Initialize,args,recovery
+AutoHp.lua,AutoHp:LoadData,Regene,recovery
+AutoHp.lua,AutoHp:BtnPickHPItemClick,,recovery
+AutoHp.lua,AutoHp:BtnPickMPItemClick,,recovery
+AutoHp.lua,AutoHp:GetSettings,,settings
+PickUp.lua,PickUp:Initialize,args,loot
+PickUp.lua,PickUp:BuildItemInBag,,loot
+PickUp.lua,PickUp:BuildItemUsing,,loot
+PickUp.lua,PickUp:BuildItemUI,"list, prefab, items, configFn",loot
+PickUp.lua,PickUp:ItemScriptUserTriger,tog,loot
+PickUp.lua,PickUp:BtnDeleteItemClick,,loot
+PickUp.lua,PickUp:BtnAutoEatItemClick,,loot
+PickUp.lua,PickUp:ScriptItemInBagClick,tog,loot
+PickUp.lua,PickUp:BtnAddAutoItemClick,,loot
+PickUp.lua,PickUp:ClearUsingItem,,loot
+PickUp.lua,PickUp:ResetData,,loot
+PickUp.lua,PickUp:ClearListChildren,"list, prefab",loot
+PickUp.lua,PickUp:CloseAutoEatItem,,loot
+PickUp.lua,PickUp:LoadData,PickItemData,loot
+PickUp.lua,PickUp:InputLimitRadius,,loot
+PickUp.lua,PickUp:TogAutoUseItemTriger,,loot
+PickUp.lua,PickUp:TogPickUpEquipmentTriger,,loot
+PickUp.lua,PickUp:TogFitterItemTriger,,loot
+PickUp.lua,PickUp:GetSettings,,settings
+PickUp.lua,PickUp:BtnFilterItemClick,,loot
+PickUp.lua,safeToBool,index,loot
+PickUp.lua,safeToNumber,index,loot
+PickUp.lua,PickUp:ClosePickUpFitterClick,,loot
+PickUp.lua,PickUp:SelectHandlePickUpItem,,loot
+PickUp.lua,PickUp:BoolToInt,check,settings
+PickUp.lua,PickUp:IntToBool,check,settings
+Global_Functions.lua,GF_ParseBool,"str, ignoreCases",global_helper
+Global_Functions.lua,GF_DisplayMoneyString,"value, isBoundMoney",global_helper
+Global_Functions.lua,GF_MoneyToString,value,global_helper
+Global_Functions.lua,GF_NumberToString,value,global_helper
+Global_Functions.lua,GF_CoppyTable,t,global_helper
+Global_Functions.lua,GF_AppendPrefixNumber,"value, prefix",global_helper
+Global_Functions.lua,GF_DisplayItemDurationTimeLeft,miliSec,global_helper
+Global_Functions.lua,GF_DisplayBuffDurationTimeLeft,miliSec,global_helper
+Global_Functions.lua,GF_DisplayTime,miliSec,global_helper
+Global_Functions.lua,GF_ShowTooltip,"message, pivot, offset, size",global_helper
+Global_Functions.lua,GF_ShowTooltipAtAbsolutePosition,"message, pivot, absolutePosition, size",global_helper
+Global_Functions.lua,GF_ShowItemTooltip,"dbItemData, buttons",global_helper
+Global_Functions.lua,GF_CloseItemTooltip,,global_helper
+Global_Functions.lua,GF_GetItemNameWithColor,"dbItemData, itemData",global_helper
+Global_Functions.lua,GF_GetItemNameWithColorByItemID,"itemID, itemData",global_helper
+Global_Functions.lua,GF_ShowSkillTooltip,"skillID, level",skill
+Global_Functions.lua,GF_CloseSkillTooltip,,skill
+Global_Functions.lua,GF_CombineEnchantAttributes,"attributes, enchantedAttributes",global_helper
+Global_Functions.lua,FindEnchantedAttribute,attributeType,global_helper
+Global_Functions.lua,HasAttribute,attributeType,global_helper
+Global_Functions.lua,GF_GetSkillMagicAttributesDescription,"attributes, level, tabSpaces, isBuff, isEnchantSkill",skill
+Global_Functions.lua,GF_ShowSelectSkill,"predicate, callback",skill
+Global_Functions.lua,GF_ShowBuffTooltip,"buffID, absolutePosition",global_helper
+Global_Functions.lua,GF_ShowSelectItem,"predicate, callback",global_helper
+Global_Functions.lua,GF_Round,"num, dp",global_helper
+Global_Functions.lua,GF_GetTaskDescription,"taskData, dbTaskData",global_helper
+Global_Functions.lua,GoToMap,mapID,movement
+Global_Functions.lua,GoToNPC,"mapID, npcID",dialog_npc
+Global_Functions.lua,GoToMonster,"mapID, monsterID",movement
+Global_Functions.lua,GF_GetMiniTaskDescription,"taskData, dbTaskData",global_helper
+Global_Functions.lua,GoToMap,mapID,movement
+Global_Functions.lua,GoToNPC,"mapID, npcID",dialog_npc
+Global_Functions.lua,GoToMonster,"mapID, monsterID",movement
+Global_Functions.lua,GF_GetPetGrowthString,growthRate,pet
+Global_Functions.lua,GF_GetPetPersonalityString,personality,pet
+Global_Functions.lua,GF_GetPetSex,sex,pet
+Global_Functions.lua,GF_GetPetFoodTypeString,foodType,pet
+Global_Functions.lua,GF_GetPetRaceString,race,pet
+Global_Functions.lua,GF_OpenAssignRemainPoints,"title, strength, energy, stamina, intelligence, dexterity, remainPoints, onSubmitCallback",global_helper
+Global_Functions.lua,GF_OpenViewPetGenerations,petID,pet
+Global_Functions.lua,GF_OpenColorPicker,"initColor, onOK",global_helper
+Global_Functions.lua,GF_TryCatch,"try, catch",global_helper
+Global_Functions.lua,GF_GetFriendTypeString,friendType,global_helper
+Global_Functions.lua,GF_ShowStandaloneRolePreview,"fashionItemID, mountItemID, fashionColorIndex",global_helper
+Global_Functions.lua,GF_AutoFightMain,,ui_or_core
+Global_Functions.lua,GF_ShowInputMoney,"description, minValue, maxValue, initValue, onSubmitCallback",global_helper
+Global_Functions.lua,GF_ShowInputNumber,"description, minValue, maxValue, initValue, onSubmitCallback",global_helper
+Global_Functions.lua,GF_ShowInputString,"description, initValue, limitCharacters, onSubmitCallback, closeAfterSubmit",global_helper
+Global_Functions.lua,GF_SetChatAction,"uiChatContent, spriteChat, finalContent",chat
+Global_Functions.lua,GF_DisplayChat,spriteChat,chat
+Global_Functions.lua,GF_GetLength,T,global_helper
+Global_Functions.lua,GF_IsSuperWeapon,itemID,global_helper
+Global_Functions.lua,GF_GetPetEquipTypeString,equipType,pet
+Global_Functions.lua,GF_GetEquipPneumaAttributePoint,"dbEquipData, symbol",global_helper
+Global_Functions.lua,GF_ShowSelectPet,"predicate, callback",pet
+TopIcon.lua,TopIcon:Initialize,,ui_or_core
+TopIcon.lua,TopIcon:InitializeComponents,,ui_or_core
+TopIcon.lua,TopIcon:ButtonOpenLuckyCircleClicked,,ui_or_core
+TopIcon.lua,TopIcon:ButtonOpenGoldenTreasureClicked,,ui_or_core
+TopIcon.lua,TopIcon:BtnExpandClick,,ui_or_core
+TopIcon.lua,TopIcon:BtnCollapseClick,,ui_or_core
+TopIcon.lua,TopIcon:AutoFightClick,,train
+TopIcon.lua,TopIcon:BtnShopClick,,shop_sell
+TopIcon.lua,TopIcon:ShowAutoStatus,AutoModel,ui_or_core
+TopIcon.lua,TopIcon:AutoTrainClick,,train
+TopIcon.lua,TopIcon:ButtonOpenInboxClicked,,ui_or_core
+TopIcon.lua,TopIcon:SetButtonInboxAnimationState,isActive,ui_or_core
+TopIcon.lua,TopIcon:AutoPkClick,,pk
+TopIcon.lua,TopIcon:AutoQuestClick,,ui_or_core
+TopIcon.lua,TopIcon:AutoSetingClick,,settings
+TopIcon.lua,TopIcon:AutoStopClick,,train
