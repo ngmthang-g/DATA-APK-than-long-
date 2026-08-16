@@ -13,6 +13,8 @@ Evidence statuses below refer to the frozen mobile APK.
 | Skill on target | `RequestUsingSkillWithTarget(skillID,RoleID)` | STATIC-SOLVED | cooldown/combat/server state |
 | Pick ground item | `PickUpItemFromItemPack(itemPackID,slotIndex,UsingAuto)` | STATIC-SOLVED / RUNTIME-PROOF | bag/item-pack state changes |
 | Trigger Sell from bag | `GetFreeBagSpace() <= configured threshold` | STATIC-SOLVED state policy | transition ownership, no pickup conflict |
+| Sort Bag | `CMD_BAG_SORT=100006`, payload `10` | STATIC-SOLVED | UpdateItemsList/fresh BagVersion; optional utility only |
+| Sort any item site | `100006`, payload `site` | STATIC-SOLVED | corresponding item list refresh |
 | Use medicine/item | `100005`, `3:itemInstanceID` | STATIC-SOLVED / RUNTIME-PROOF | HP/MP/item/cooldown change |
 | Abandon item | `100005`, `4:itemInstanceID` | STATIC-SOLVED / RUNTIME-PROOF | removal/fresh bag; require `IsItemThrowable` + explicit policy |
 | Move item to site | `100005`, `5:itemInstanceID:destinationSite` | STATIC-SOLVED / RUNTIME-PROOF | item site changes |
@@ -28,6 +30,18 @@ Evidence statuses below refer to the frozen mobile APK.
 | Send chat | `100008`, object `{RoleID,Name,Content=Base64(text),Channel}` | STATIC-SOLVED / RUNTIME-PROOF | inbound/visible/server response |
 | Send location ping | append `@GOTO_MapID_GridX_GridY`, then normal chat | STATIC-SOLVED / RUNTIME-PROOF | received clickable location |
 
+## Exact weapon keep rule
+
+Recovered mobile Lua uses `Game.GetEquipType(ItemID)` as **equipment position**, comparing it directly to `C_EquipPosition`.
+
+```text
+weapon = Game.GetItemType(ItemID) == "Equip"
+      && Game.GetEquipType(ItemID) == C_EquipPosition.Weapon[1]
+      && C_EquipPosition.Weapon[1] == 0
+```
+
+Do not use `GetEquipType < 10` as a weapon rule. See `database/AUTO_SELL_CLASSIFICATION.md`.
+
 ## Item/survival guards
 
 ```text
@@ -35,6 +49,7 @@ use current DBItemData.ID, never stale/template identity
 configured HP/MP medicine is reserved from Sell/Drop/Destroy
 Abandon requires Game.IsItemThrowable(ItemID) plus user's explicit policy
 bulk Destroy is disabled by default
+Bag sort is not required for FreeBagSpace or semantic bag scanning
 ```
 
 ## Sell guards
