@@ -29,32 +29,135 @@ payload = "1"
 
 Newbie and skill revive use `"2"` and `"3"`. This is independently mobile-verified, not inherited from PC.
 
-## Built-in death hook
+## Revival server/UI state
 
-`AutoFight_Main:DeathActive()` for Train/PK:
+Inbound `CMD_REVIVE_DATA` supplies `revivalData` and drives the `Revival` UI. Source uses:
 
-1. records death map/position when not already in infernal map;
-2. if `AutoRevival=true`, sends normal revive and closes Revival UI if present;
-3. if `AutoComeback=true`, sets `IsComeBackTrain=true` and invokes route-back logic.
+```text
+Action
+TimeLeft
+IsEnableReviveNewbie
+IsEnableBySkill
+```
 
-The stock source uses fixed waits internally. An external orchestrator should prefer state proof over copying those waits.
+`TCPCmdHandler` opens/updates/closes the Revival frame based on `Action`. On initial Open it also calls:
 
-## Death location and comeback
+```text
+AutoFight_Main:DeathActive()
+```
 
-The donor saves `DieMapID` and `DieMapLocaltion`. Map `87` is specially treated as infernal/death map.
+This inbound generation is the best server-side transaction state for preventing duplicate revive actions.
 
-`ComeBackTrainData()` uses current movement/map/distance state. If in Map 87 it routes via `Game.GoTo(2,-1,-1)` and then back to the saved death map/position; otherwise it directly `Game.GoTo(DieMapID,DieX,DieY)`. Arrival clears `IsComeBackTrain`.
+## Stock Revival countdown
+
+`Revival:DoCountDown()` initializes from `CurrentReviveData.TimeLeft`, decrements 1000 ms each second, and when the timer becomes negative calls `ButtonGoToInfernalClicked()`. That function sends the same normal request:
+
+```text
+200063:"1"
+```
+
+So a stock client may generate normal revive from either:
+
+1. Revival countdown expiry;
+2. AutoFight `AutoRevival`.
+
+An external tool must avoid racing either stock producer with its own duplicate request. Track one pending normal revive per death/Revival generation.
+
+## Built-in AutoFight death hook
+
+`AutoFight_Main:DeathActive()` only runs its recovery path while current Auto mode is Train or PK.
+
+If current MapID is not 87 it records:
+
+```text
+DieMapID = Game.RoleData.MapID
+DieMapLocaltion = current position
+```
+
+### Stock AutoRevival timing
+
+When `AutoRevival=true`, source does:
+
+```text
+wait 5 seconds
+send 200063:"1"
+wait 0.5 seconds
+close Revival UI if still present
+```
+
+This fixed 5-second delay is stock policy, **not evidence that protocol 200063 requires five seconds**. External production logic should instead use fresh death/Revival state and concrete completion proof.
+
+## Built-in AutoComeback
+
+When `AutoComeback=true`:
+
+```text
+IsComeBackTrain = true
+```
+
+The death coroutine attempts `RiderUp()`. If mounting starts it waits five seconds and returns before directly issuing `GoTo`. The comeback state is not lost: the running Train loop sees `IsComeBackTrain` and periodically calls `ComeBackTrainData()`.
+
+In the Train loop this happens when `TotalTick % 10 == 0` while comeback is active, so route correction is periodic rather than event-driven.
+
+## `ComeBackTrainData()` exact donor behavior
+
+### While already moving
+
+If current MapID equals `DieMapID`, it computes distance to the saved death position. When:
+
+```text
+distance < 1000
+```
+
+it announces successful comeback and clears `IsComeBackTrain`.
+
+That `<1000` threshold is a very loose stock tolerance for a tool that wants a precise configured train center. Treat it as donor behavior, not production truth.
+
+### If currently Map 87
+
+```text
+Game.GoTo(2,-1,-1, callback)
+ -> Game.GoTo(DieMapID,DieX,DieY, callback)
+ -> IsComeBackTrain=false
+```
+
+### Otherwise
+
+```text
+Game.GoTo(DieMapID,DieX,DieY, callback)
+ -> IsComeBackTrain=false
+```
+
+## Saved death spot vs configured train spot
+
+Stock donor returns to **the death position**. A larger external auto should distinguish:
+
+```text
+DeathMap/DeathPosition = diagnostic / stock donor state
+ConfiguredTrainMap/TrainPosition = desired external return target
+```
+
+If the character died while chasing far from the ideal center, returning to the exact death coordinate may be the wrong production behavior. The EXE should normally return to its configured train point.
 
 ## Recommended production proof
 
 ```text
-DEAD
- -> send one 200063:"1"
+DEAD generation
+ -> ensure no normal revive already pending / countdown race
+ -> send one 200063:"1" when policy allows
  -> fresh state says alive / Revival lifecycle cleared
- -> wait map ready
- -> GoTo saved TrainMap/TrainPos
- -> fresh MapID + valid position within tolerance
+ -> wait IsMapReady
+ -> Game.GoTo(configured TrainMap,TrainX,TrainY)
+ -> fresh MapID + valid position within configured tolerance
  -> resume Train=1
 ```
 
-Do not treat a fixed sleep as completion proof.
+Do not treat fixed waits or stock `<1000` distance alone as completion proof.
+
+## Failure / retry discipline
+
+- one pending revive per death generation;
+- bounded timeout + fresh state before retry;
+- death during return creates a new death generation and invalidates the route action;
+- map transition invalidates stale UI/world pointers;
+- if stock AutoRevival/AutoComeback remains enabled, do not run an independent external copy without arbitration.
