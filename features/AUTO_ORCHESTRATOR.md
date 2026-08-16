@@ -1,93 +1,42 @@
-# Feature Specification — Multi-LD Orchestrator
+# Feature — Auto Orchestrator for each LD9
 
-Status: **DESIGN — architecture defined, runtime implementation pending**.
+Status: **DESIGN, backed by solved mobile semantic actions**
 
-## One state machine per LD9
+Each LD9 has an independent state machine and action gate.
 
-Each emulator/game PID owns a separate state machine.
-
-Suggested states:
+Suggested priority:
 
 ```text
-IDLE
-SCANNING
-TRAINING
-REVIVE_WAIT
-REVIVE_REQUEST
-RETURN_TO_SPOT
-SELL_PREPARE
-GO_TO_VENDOR
-OPEN_VENDOR
-SELLING
-RETURN_FROM_SELL
-PAUSED
-ERROR_RECOVERY
+Manual/Safety
+ > Revive
+ > map transition
+ > critical Heal
+ > current Sell/NPC transaction
+ > Chat/Ping when requested
+ > Train
 ```
 
-## Action priority
+Core cycle:
 
 ```text
-manual/security pause
- > process/disconnect recovery
- > revive
- > map transition/return
- > active sell transaction
- > train combat
- > background metrics
-```
-
-## Action Gate
-
-At most one mutable action may be in flight per game PID.
-
-Read-only observers may execute concurrently if their resolver/object lifetime model is proven safe.
-
-## Proof-driven transition
-
-Every transition follows:
-
-```text
-fresh state
+fresh immutable snapshot
+ -> decide one owner feature
  -> guard
- -> one action
- -> expected proof
- -> timeout/failure branch
- -> fresh state
+ -> one mutable semantic action
+ -> observe result
+ -> fresh snapshot
 ```
 
-## Example full cycle
+Example integrated flow:
 
 ```text
 TRAINING
- -> bag threshold reached
- -> SELL_PREPARE
- -> GO_TO_VENDOR
- -> OPEN_VENDOR
- -> SELLING until no candidate
- -> RETURN_FROM_SELL
- -> TRAINING
+  dead -> REVIVE -> RETURN_SPOT -> TRAINING
+  bag threshold -> SELL_ROUTE -> SELL_LOOP -> RETURN_SPOT -> TRAINING
+  heal condition -> HEAL_ROUTE -> DIALOG_SERVICE -> RETURN_SPOT -> TRAINING
+  user/schedule chat -> SEND_CHAT -> return current state
 ```
 
-If death occurs anywhere:
+Do not share guest pointers, current target, shop data or dialog state across LD instances.
 
-```text
-current state
- -> invalidate transient shop/target refs
- -> REVIVE flow
- -> RETURN_TO_SPOT
- -> TRAINING
-```
-
-## Multi-instance UI
-
-Windows EXE may show a table such as:
-
-```text
-LD | Character | Map | HP | BagFree | State | LastProof
-```
-
-Start/Pause buttons can target selected instances. Settings remain per-instance unless explicitly copied by the user.
-
-## No shared mutable state
-
-Never share current shop, target, item instance ID, MainThread delegate, raw object pointer, or pending action token across BotSessions.
+Canonical: `analysis/19_LD9_ACTION_ORCHESTRATION.md`.
