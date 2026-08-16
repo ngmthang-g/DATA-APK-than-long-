@@ -1,0 +1,22 @@
+name,id,display_name,status,automation_use
+Weapon,0,Vũ khí,VERIFIED_STATIC,exact keep-weapon rule
+Hat,1,Mão,VERIFIED_STATIC,equipment classification
+Cloth,2,Y phục,VERIFIED_STATIC,equipment classification
+Gloves,3,Hộ thủ,VERIFIED_STATIC,equipment classification
+Shoes,4,Hài,VERIFIED_STATIC,equipment classification
+Belt,5,Yêu đai,VERIFIED_STATIC,equipment classification
+Ring,6,Giới chỉ,VERIFIED_STATIC,equipment classification
+Necklace,7,Hạng liên,VERIFIED_STATIC,equipment classification
+Mount,8,Thú cưỡi,VERIFIED_STATIC,equipment classification
+Ring_2,11,Giới chỉ,VERIFIED_STATIC,equipment classification
+Amulet,12,Hộ phù,VERIFIED_STATIC,equipment classification
+Amulet_2,13,Hộ phù,VERIFIED_STATIC,equipment classification
+Cuff,14,Hộ uyển,VERIFIED_STATIC,equipment classification
+Shoulderpads,15,Hộ kiên,VERIFIED_STATIC,equipment classification
+Fashion,16,Thời trang,VERIFIED_STATIC,special keep category
+Dart,17,Ám khí,VERIFIED_STATIC,special keep category
+Soul,18,Võ hồn,VERIFIED_STATIC,special keep category
+DragonTattoo,19,Long văn,VERIFIED_STATIC,special keep category
+HeroicOrder,20,Lệnh bài,VERIFIED_STATIC,special keep category
+Signet,21,Hào hiệp ấn,VERIFIED_STATIC,special keep category
+WeaponVisual,22,Vũ khí huyễn sắc,VERIFIED_STATIC,special keep category
