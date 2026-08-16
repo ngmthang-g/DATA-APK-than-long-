@@ -40,6 +40,8 @@ Special           9
 CrossServer      10
 ```
 
+`C_ChatChannels` separately marks which UI channel groups are actually sendable (`CanChat=true`). Normal sendable groups include Special, Near, Private, Team, Global, Guild, Allies, Faction and CrossServer. Aggregate display groups such as All/System/Custom are not direct send channels.
+
 ## Exact coordinate ping format
 
 `ChatBox:ButtonSendLocationClicked()` reads current MapID and converts current world position to grid position, then appends exactly:
@@ -50,11 +52,25 @@ CrossServer      10
 
 The text then goes through ordinary chat as Base64 content.
 
+The shipped ChatBox input has:
+
+```text
+CharacterLimit = 200
+```
+
+The location button refuses to append the `@GOTO_...` token when current text + token would exceed this client UI limit. An external semantic sender should preserve the same practical 200-character envelope unless runtime evidence shows the server safely accepts another limit.
+
 ## Clickable navigation on receiver
 
 Chat rendering recognizes a `GoTo_<map>_<x>_<y>` link, converts grid coordinates back to world coordinates and registers a click callback that calls `Game.GoTo(mapID,worldX,worldY)`.
 
 This proves location ping is a semantic client feature, not a screenshot/mouse trick.
+
+## Local cooldown finding
+
+The recovered `ButtonSendMessageClicked()` performs channel/content/private-target validation, optional item/pet attachment, Base64 conversion and immediately calls `Network.SendPacket`. No explicit client-side time/cooldown limiter is present in that send function.
+
+This **does not prove there is no server-side anti-spam/cooldown**. Treat server acceptance, throttling and permission errors as runtime behavior. The EXE should implement its own conservative per-session rate limiter rather than sending as fast as the bridge permits.
 
 ## EXE design
 
@@ -65,4 +81,4 @@ SendChat(channel,text,privateRoleID?,privateName?)
 SendLocationPing(channel,optionalPrefixText)
 ```
 
-Use a rate limiter and one action gate. Server-side cooldown/permission failures are runtime outcomes; do not attempt to bypass them.
+No Windows focus/keyboard dependency is needed. Use one action gate and a conservative rate limiter. Do not attempt to bypass server chat limits or moderation.
