@@ -1,0 +1,24 @@
+layer,name,id,status,automation_use
+LuaGameplay,CMD_ITEM_ACTION,100005,VERIFIED_STATIC,item mutation
+LuaGameplay,CMD_BAG_SORT,100006,VERIFIED_STATIC,bag sort
+LuaGameplay,CMD_SHOW_GAMEDIALOG,100007,VERIFIED_STATIC,NPC/dialog semantic selection
+LuaGameplay,CMD_CLIENT_CHAT,100008,VERIFIED_STATIC,chat and @GOTO ping
+LuaGameplay,CMD_NPC_SHOP_DATA,200034,VERIFIED_STATIC,current NPC shop data
+LuaGameplay,CMD_NPC_SHOP_BUY_REQUEST,200035,VERIFIED_STATIC,shop buy/buyback
+LuaGameplay,CMD_NPC_SHOP_SELL_REQUEST,200036,VERIFIED_STATIC,sell one live item
+LuaGameplay,CMD_OTHER_ROLE_COMMAND,200051,VERIFIED_STATIC,other-player command
+LuaGameplay,CMD_OPEN_STORAGE,200052,VERIFIED_STATIC,storage
+LuaGameplay,CMD_TEAM_ACTION,200057,VERIFIED_STATIC,party/team
+LuaGameplay,CMD_REVIVE_DATA,200063,VERIFIED_STATIC,revive/Đầu thai
+EngineCore,CMD_CHANGE_MAP,16,VERIFIED_STATIC,low-level lifecycle
+EngineCore,CMD_REMOVE_ITEM,25,VERIFIED_STATIC,item removal lifecycle
+EngineCore,CMD_UPDATE_ITEMS_LIST,26,VERIFIED_STATIC,bag refresh lifecycle
+EngineCore,CMD_CLICK_OBJECT,27,VERIFIED_STATIC,object click lifecycle
+EngineCore,CMD_USE_SKILL,36,VERIFIED_STATIC,skill lifecycle
+EngineCore,CMD_OBJECT_DEATH,41,VERIFIED_STATIC,death lifecycle
+EngineCore,CMD_AUTO_PATH,49,VERIFIED_STATIC,auto-path lifecycle
+EngineCore,CMD_REVIVE,80,VERIFIED_STATIC,revive lifecycle
+EngineCore,CMD_MOVE_TO_LOCATION,83,VERIFIED_STATIC,movement lifecycle
+EngineCore,CMD_CHAT_DATA,89,VERIFIED_STATIC,inbound/core chat lifecycle
+EngineCore,CMD_CAPTCHA,96,VERIFIED_STATIC,safety lifecycle
+EngineCore,CMD_CLIENT_LUA,100,VERIFIED_STATIC,Lua/core bridge
