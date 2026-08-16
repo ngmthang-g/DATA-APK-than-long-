@@ -1,102 +1,109 @@
 # Auto Runtime Proof Queue — LDPlayer 9
 
-Only collect proofs that unblock production automation. Do not restart broad APK reverse.
+Static reverse has solved the major Train/Revive/Sell/Chat action producers. Runtime work should now prove safety and state transitions, not rediscover packet IDs.
 
 ## P0 — per-instance read-only bridge
 
-Goal: prove one LD9 guest bridge can repeatedly resolve and read state without destabilizing the game.
-
-Capture:
+For each LD9 capture repeatedly:
 
 ```text
-LD index
-ADB serial
-Android game PID
-character name/RoleID if resolved
+LD index / ADB serial / game PID
+RoleID / RoleName
 HP / MaxHP
 MapID / Position
-IsDeath
-GetFreeBagSpace
-snapshot timestamp/version
+IsDeath / IsMapReady
+FreeBagSpace
+snapshot version / world generation
 ```
 
-Pass condition: stable repeated reads while moving/map-changing, no cross-instance leakage.
+Pass: stable during movement/map change and no cross-instance leakage.
 
 ## P0 — MainThread harmless callback
 
-Goal: prove guest code can dispatch one harmless managed action through game-owned MainThread semantics.
+Prove one valid managed Action/delegate can be dispatched through `MainThread.Execute` with correct lifetime/thread and no crash/diss. Do not begin with sell/revive/combat.
 
-Do not begin with sell/revive/combat.
+## P1 — built-in Train live proof
 
-Pass condition:
+Invoke semantic Train start on one disposable test session:
 
 ```text
-valid Action/delegate lifetime
- -> MainThread dispatch
- -> callback executes on expected Unity/game thread
- -> no crash/diss
+StartAutoFight(Train)
+ -> target selected
+ -> chase/skill occurs
+ -> snapshot remains stable
+ -> StartAutoFight(None) stops/yields cleanly
 ```
 
-## P1 — revive producer/payload
+No competing external combat loop during this proof.
 
-Manual test:
+## P1 — normal revive acceptance
 
-1. character dies;
-2. arm network trace at `SendPacketToServer` / `SendPacket` / `TCPGame` producer boundary;
-3. press normal Đầu thai once;
-4. record command ID and exact payload/argument encoding;
-5. record pre/post `IsDeath`, HP, map-ready and position.
-
-Promote only after repeatable capture.
-
-PC donor search hint: PC KB has `200063`, but do not assume equality.
-
-## P1 — shop open + sell producer/payload
-
-Manual test:
-
-1. scan bag and choose one disposable sellable item;
-2. go to a known sell NPC manually or semantically;
-3. trace dialog/shop opening state;
-4. sell exactly one item;
-5. record command ID/payload and current identifiers required by request;
-6. verify the live item instance disappears/quantity changes and bag rescans consistently.
-
-PC donor search hint: PC KB has `200036` with instance/shop identifiers; mobile requires confirmation.
-
-## P1 — map transition / return-to-spot
-
-Verify:
+Static request is already solved:
 
 ```text
-saved TrainMap/TrainPosition
- -> GoTo/AutoPath
- -> portal/map transition
+200063:"1"
+```
+
+Runtime proof:
+
+```text
+fresh dead state -> one request -> alive/HP/revival lifecycle -> map-ready
+```
+
+Also compare stock `AutoComeback` with external explicit return policy.
+
+## P1 — one verified mobile sell vendor
+
+Do not rediscover `200036`. Instead prove:
+
+```text
+GoToNPC(candidate)
+ -> actual GameDialog/Shop
+ -> inbound current shop data 200034
+ -> IsGuildShop=false
+ -> one disposable sellable item
+ -> send 200036 with current instance/shop IDs
+ -> RemoveItem/UpdateItemsList/fresh bag proof
+```
+
+Lâu Lan PC-donor/user candidates: Ba Nhĩ 328, Mã Kiêu Minh 373; confirm on mobile.
+
+## P1 — treatment
+
+For chosen healer:
+
+```text
+GoToNPC
+ -> capture GameDialog.Selections
+ -> record actual visible treatment text and selectionID
+ -> send 100007 actualSelectionID:-1
+ -> follow any real confirmation
+ -> prove HP/result
+```
+
+Do not make selectionID a permanent constant until repeated evidence supports it.
+
+## P1 — chat/ping
+
+Prove desired channels using `100008`. Validate normal message and `@GOTO_MapID_GridX_GridY` location ping. Record server cooldown/permission responses; do not bypass them.
+
+## P1 — map transition and return spot
+
+Use state proof:
+
+```text
+saved TrainMap/TrainPos
+ -> GoTo
+ -> map transition
  -> IsMapReady
- -> fresh MapID/Position
- -> within tolerance
+ -> fresh MapID/Position within tolerance
+ -> resume Train
 ```
-
-No fixed sleep is accepted as proof.
 
 ## P1 — multi-LD isolation
 
-Run at least two LD9 sessions and deliberately put them in different states:
+At least two instances in deliberately different states. Pass only if profiles, snapshots, targets, dialog/shop state and actions never cross sessions.
 
-```text
-A = training
-B = dead/reviving
-C = bag full/selling (if available)
-```
+## P2 — only remaining static reverse
 
-Pass condition: no pointer/profile/action/shop/target state crosses sessions.
-
-## P2 — high-level Auto Train donor
-
-Static metadata already exposes low-level target/chase/skill primitives. Research high-level built-in auto only if using it materially reduces action complexity and runtime risk.
-
-PC donor: `AutoFight_Main:StartAutoFight(C_AutoModel.Train)` exists on PC, but exact mobile source/path remains unverified.
-
-## P2 — asset/Lua extraction
-
-Only attempt encrypted Interface/Lua bundle recovery when a concrete missing action cannot be solved via metadata + runtime producer trace.
+Decrypt/analyze another asset/config bundle only when a concrete feature requires missing static data (for example a mobile-only NPC service table). Broad asset dumping is no longer justified for the current core tool.
