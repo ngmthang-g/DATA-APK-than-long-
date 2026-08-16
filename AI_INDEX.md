@@ -1,300 +1,265 @@
-# AI Knowledge Index — Thần Long Mobile APK / LD9
+# AI Knowledge Index — Thần Long Mobile APK / LDPlayer 9
 
 Repository: `ngmthang-g/DATA-APK-than-long-`
 
-Đây là knowledge base cho **tool EXE Windows điều khiển nhiều LDPlayer 9 chạy Thần Long Mobile**.
+Canonical purpose: **technical memory for a Windows EXE that manages multiple LDPlayer 9 instances running the Thần Long Mobile APK**. Each LD instance is one independent BotSession.
 
 ---
 
-# 1. Start here — không đọc toàn repo
+# 1. Start here — do not read the whole repo
+
+Normal route:
 
 ```text
 AI_BOOTSTRAP.md
  -> AUTO_TOOL_SCOPE.md
  -> AI_ROUTER.md
- -> contexts/BUILD_*.md phù hợp
- -> database catalog
- -> deep analysis nếu còn gap
+ -> one matching contexts/BUILD_*.md
+ -> compact database/action catalog
+ -> deep analysis only for a real gap
 ```
 
-Compact references:
+Best compact references:
 
 - `AUTO_FEATURE_READINESS.md`
-- `research/VERIFIED_APK_SNAPSHOT.md`
-- `research/AUTO_RUNTIME_PROOF_QUEUE.md`
 - `database/AUTO_TOOL_API_CATALOG.md`
 - `database/AUTO_TOOL_ACTION_CATALOG.md`
-- `database/FACTS.jsonl`
-- `analysis/08_PC_MOBILE_CROSSWALK.md`
+- `database/AUTO_ACTION_EXACT_FLOWS.md`
+- `database/PACKET_IDS_LUA_MOBILE.csv`
+- `research/AUTO_RUNTIME_PROOF_QUEUE.md`
 
 ---
 
 # 2. Frozen APK snapshot
 
-Current artifact:
-
 ```text
 ThanLongMobile_2024.apk
 SHA256 9de719391c29d50816a3762f758abe26896cab4d996706711b30fdc10d9933f0
 size   77,318,940 bytes
+Unity  6000.3.6f1
+arch   ARM64
+IL2CPP metadata version 39
 ```
 
-Core files:
+Core native/runtime files include `libil2cpp.so`, `libunity.so`, `libFGClientTool_Android.so` and `global-metadata.dat`.
+
+Metadata parse currently maps approximately:
 
 ```text
-lib/arm64-v8a/libil2cpp.so                       90,658,536
-lib/arm64-v8a/libunity.so                        22,212,304
-lib/arm64-v8a/libFGClientTool_Android.so            876,144
-assets/bin/Data/Managed/Metadata/global-metadata.dat 14,475,116
-assets/bin/Data/data.unity3d                     25,382,730
-assets/Interface*.unity3d                        multiple bundles
+15,667 type definitions
+130,649 methods
+68,049 fields
+1,186 original C# source-path strings
 ```
 
-Metadata sanity `FA B1 1B AF` + version `0x27` = **39**.
-
-`ScriptingAssemblies.json` includes `Assembly-CSharp.dll`, `Assembly-CSharp-firstpass.dll`, Unity modules, Google.Protobuf, protobuf-net, Newtonsoft.Json and other runtime assemblies.
+Canonical: `analysis/01_IL2CPP_RUNTIME_METADATA.md`, `analysis/10_SOURCE_PATH_MANIFEST.md`.
 
 ---
 
-# 3. PC ↔ Mobile relationship
+# 3. Major Phase-3 breakthrough — decrypted Interface Lua/UI
 
-Evidence strongly supports a shared/closely-related FGStudio Unity codebase: same high-value namespaces/class/method vocabulary appears on mobile and PC (`LuaSystemAPI_Game`, `MainThread`, semantic Game APIs, TCP layer, item/map/NPC concepts).
+`Interface.unity3d` was decrypted using the client native crypto implementation, parsed as UnityFS and its TextAssets were extracted.
 
-Use PC repo as **semantic donor/index accelerator**. Do not reuse PC RVA/offsets.
+Recovered automation source includes:
 
-Canonical crosswalk: `analysis/08_PC_MOBILE_CROSSWALK.md`.
+```text
+AutoFight_Main.lua
+Revival.lua
+NPCShop.lua
+NPCShop_SellItemTab.lua
+GameDialog.lua
+ChatBox.lua
+Global_Constants.txt
+Global_Functions.lua
+TCPPacketDefine.txt
+TCPCmdHandler.lua
+```
+
+This changes many earlier `TARGETED-PROOF` items into exact static mobile facts.
+
+Canonical: `analysis/11_INTERFACE_BUNDLE_DECRYPTION.md`.
 
 ---
 
-# 4. Runtime state surface
+# 4. Packet model — two command layers
 
-High-value mobile metadata names include:
+Do not confuse:
+
+1. C#/engine `TCPGameServerCmds` low-level events (`CMD_REVIVE=80`, `CMD_CHAT_DATA=89`, etc.);
+2. Lua gameplay `G_TCPPacketDefine` requests (`CMD_REVIVE_DATA=200063`, `CMD_CLIENT_CHAT=100008`, etc.).
+
+Canonical: `analysis/12_PACKET_LAYERS_AND_LUA_PROTOCOL.md` and `database/PACKET_IDS_LUA_MOBILE.csv`.
+
+---
+
+# 5. Auto Train — semantic engine solved
+
+Mobile source independently verifies:
 
 ```text
-RoleData
-LuaLeaderData
-CurrentHP / MaxHP
-MapID / PosX / PosY / Position
-IsDeath
-IsMapReady
-GetCurrentMoveDestination
-GetLocalMapObjects
-GetNearbyObjects
+C_AutoModel.Train = 1
+AutoFight_Main:StartAutoFight(C_AutoModel.Train)
 ```
 
-Target/combat surface:
+Built-in Train uses:
 
 ```text
-GetNearByEnemies
+GetNearbySpritesWithPredicate
+IsDeath / RoleData
+GetSkillLuaData
+HasPath
+StopAutoPath
 SelectTarget
 ChaseTarget
-UseSkill
-RequestUsingSkill
 RequestUsingSkillWithTarget
-RequestUsingSkillWithPos
-```
-
-These provide a strong route to semantic scanner/action logic instead of OCR/image matching.
-
----
-
-# 5. Map / movement / NPC
-
-Verified names:
-
-```text
-MoveTo
 MoveToEx
-GoTo
-GetNPCPosition
-ClickNPC
-AutoPathManager
-StartAutoPath
-StopAutoPath
-IsAutoPathing
-SendAutoPathRequestChangeMap
 ```
 
-Target design:
+It includes target filtering, skill/range/path guards, loot, return-to-center and death-comeback donor logic.
 
-```text
-current snapshot
- -> choose semantic destination
- -> GoTo/AutoPath
- -> verify MapID + IsMapReady + fresh Position within tolerance
-```
-
-Do not hardcode screen coordinates when semantic position/path APIs are available.
+Canonical: `analysis/13_BUILTIN_AUTO_TRAIN_ENGINE.md`, `features/AUTO_TRAIN.md`.
 
 ---
 
-# 6. Inventory / Auto Sell
+# 6. Death / Revive / return map — request solved
 
-Verified metadata names:
-
-```text
-GetFreeBagSpace
-GetItems
-GetItemsAtSite
-GetItemData
-GetItemAtSite
-GetTotalItems
-CountItem
-IsItemSellable
-GetItemBasePrice
-IsItemSellToShopWithBoundMoney
-```
-
-Item-related field names present:
+Exact normal revive / Đầu thai request from mobile Lua:
 
 ```text
-ID
-ItemID
-Site
-Position
-Bound
-Quantity
-Creator
-DurationLeft
-Durability
-Properties
-Attributes
-SellPrice
-BasePrice
+CMD_REVIVE_DATA = 200063
+payload = "1"
 ```
 
-`ItemSite` and names such as `Bag`, `Body`, `Storage`, `Stall`, `Trade`, `Pet` are present.
+Types:
 
-Important unresolved boundary: exact mobile sell request producer/packet payload/current-shop state has not yet been runtime-proven. PC's `200036` is `PC-DONOR`, not mobile VERIFIED.
+```text
+1 normal
+2 newbie
+3 skill
+```
 
-Canonical: `features/AUTO_SELL.md`, `analysis/04_INVENTORY_ITEMS_SHOP.md`.
+Built-in AutoFight records death MapID/position and has `AutoComeback` route logic. Map 87 is treated specially as infernal/death map; the stock donor routes through Map 2 before returning to the saved death map/position.
+
+Canonical: `analysis/14_REVIVE_RETURN_MAP_ENGINE.md`, `features/AUTO_REVIVE.md`.
 
 ---
 
-# 7. Death / Revive
+# 7. Auto Sell — exact request solved
 
-Verified names:
-
-```text
-IsDeath
-ProcessObjectDeath
-ProcessObjectRevive
-CMD_REVIVE
-```
-
-This proves death/revive concepts are present in client metadata/network processing.
-
-It does **not** yet prove exact outbound mobile revive packet number/payload. PC's `CMD_REVIVE_DATA=200063` remains donor evidence until mobile trace/producer recovery.
-
-Canonical: `features/AUTO_REVIVE.md`.
-
----
-
-# 8. Lua / network bridge
-
-Verified names:
+Bag site is mobile-verified:
 
 ```text
-LuaSystemManager
-LuaSystemAPI_Game
-LuaSystemAPI_Network
-SendPacketToServer
-SendPacket
-TCPGame
-TCPOutPacket
-PacketCmdID
+ItemSite.Bag = 10
 ```
 
-This gives two narrow routes for exact action research:
+Exact sell request:
 
-1. static producer call-chain recovery;
-2. runtime trace of one manual action on LD9, logging command/payload at the semantic network boundary.
+```text
+CMD_NPC_SHOP_SELL_REQUEST = 200036
+payload = DBItemData.ID : CurrentShopData.NpcShopID : CurrentShopData.ID
+```
 
-Prefer these over reverse-engineering all UI bundles.
+The first value is the **live item instance ID**, not template ItemID or bag Position.
 
----
+Stock Lua protects quest-item range `40000000 <= ItemID < 50000000` and requires `Game.IsItemSellable(ItemID)`.
 
-# 9. MainThread
+Current normal shop must have `IsGuildShop == false`.
 
-`FGStudio.Engine.Utilities.MainThread` exists in metadata. Previous parse found members consistent with PC: `Instance`, `Execute(Action)`, `Update`, `DoExecuteWorks`, queue-backed dispatch.
-
-Status: class/pattern **RECONFIRMED**, external live callback from bridge still `TARGETED-PROOF`.
-
-Canonical: `analysis/07_MAIN_THREAD_DISPATCHER.md`, `contexts/BUILD_MAINTHREAD_BRIDGE.md`.
+Canonical: `analysis/15_INVENTORY_NPCSHOP_AUTO_SELL.md`, `features/AUTO_SELL.md`.
 
 ---
 
-# 10. LD9 host/guest architecture
+# 8. NPC / Trị liệu
 
-Windows EXE cannot directly invoke ARM64 methods as though the Android game were a Windows DLL.
+Built-in semantic route:
 
-Canonical split:
+```text
+GetNPCPosition -> GoTo -> ClickNPC
+```
+
+`GameDialog` dynamically exposes `Selections[selectionID] = visibleText`. Exact selection request:
+
+```text
+CMD_SHOW_GAMEDIALOG = 100007
+payload = selectionID:SelectedItemID
+```
+
+Default non-award selection uses `SelectedItemID=-1`.
+
+Therefore Trị liệu should match current visible text, not hardcode a button coordinate or guessed selection ID.
+
+PC Config gives NPC 339 Đỗ Thanh Đằng on Lâu Lan Map 5 as a strong donor candidate; mobile runtime must still confirm current service.
+
+Canonical: `analysis/16_GAMEDIALOG_NPC_TREATMENT.md`, `features/AUTO_HEAL_NPC.md`.
+
+---
+
+# 9. Chat and coordinate ping — solved static
+
+Exact chat request:
+
+```text
+CMD_CLIENT_CHAT = 100008
+packet object: RoleID, Name, Content=Base64(text), Channel
+```
+
+Exact coordinate attachment:
+
+```text
+@GOTO_<MapID>_<GridX>_<GridY>
+```
+
+The client produces it from `RoleData.MapID + WorldToGridPosition(RoleData.Position)`. Receiver-side navigation resolves the link and calls `Game.GoTo`.
+
+Canonical: `analysis/17_CHAT_CHANNEL_AND_GOTO_AUTOMATION.md`, `features/AUTO_CHAT.md`, `database/CHAT_CHANNELS_MOBILE.csv`.
+
+---
+
+# 10. Runtime snapshot basis
+
+High-value mobile state roots now have exact class/method mapping, including `RoleData` (199 methods / 99 fields) and `DBItemData`.
+
+Snapshot should include role identity, map/position, HP/MP/death, map readiness, selected target, auto path state, free bag space/bag instances, current dialog/shop and safety state.
+
+Canonical: `analysis/18_RUNTIME_ROLE_BAG_SNAPSHOT.md`.
+
+---
+
+# 11. Multi-LD architecture
 
 ```text
 ThanLongAuto.exe
- -> LD discovery + ADB/instance mapping
- -> per-instance command/state channel
- -> ARM64 guest bridge attached to game process
- -> IL2CPP resolver + semantic state/actions
+ -> LD instance manager
+ -> one independent BotSession per LD9
+ -> guest command/state channel
+ -> ARM64 guest bridge
+ -> IL2CPP resolver / semantic Lua+Game adapter
 ```
 
-Each LD9 is a separate BotSession.
+Do not share guest pointers or mutable state between instances. One mutable action gate per BotSession.
 
-Canonical: `analysis/05_LD9_HOST_GUEST_ARCHITECTURE.md`.
+Canonical: `analysis/05_LD9_HOST_GUEST_ARCHITECTURE.md`, `analysis/19_LD9_ACTION_ORCHESTRATION.md`.
 
 ---
 
-# 11. Emulator/security surface
+# 12. MainThread
 
-Native exports in `libFGClientTool_Android.so` include:
+`FGStudio.Engine.Utilities.MainThread` exact member map is recovered (`Instance`, `Execute(Action)`, `Update`, `DoExecuteWorks`, queue field). A separate `UnityMainThreadDispatcher` is also present.
 
-```text
-FG_EmuDetect
-FG_GetEmuScore
-FG_GetEmuReason
-FG_IsAdbEnabled
-FG_IsAdbReallyEnabled
-FG_GetEnabledAccessibilityServices
-FG_CanDrawOverlays
-FG_GetSecurityReport
-FG_Input_OnTap
-FG_Input_GetMetrics
-FG_Decrypt
-FG_Encrypt
-```
-
-Metadata also contains `SecurityReport` and `LoginData` names.
-
-Interpretation: emulator/ADB/accessibility/overlay/input/security state is observable by client code. This is a stability/risk consideration, not proof of a ban/block policy.
-
----
-
-# 12. Feature readiness
-
-See `AUTO_FEATURE_READINESS.md`.
-
-Current summary:
-
-```text
-Read-only scanner primitives      strong static basis
-Map/path/NPC primitives           strong static basis
-Combat primitives                strong static basis
-Bag/item filtering               strong static basis
-MainThread dispatcher             static basis; live bridge proof needed
-Revive exact outbound request     targeted proof needed
-Sell exact outbound request       targeted proof needed
-Multi-LD orchestration            architecture/design, runtime implementation needed
-```
+External guest construction/rooting of a valid managed Action and one harmless live callback remain runtime proof requirements before production mutations.
 
 ---
 
 # 13. Current real gaps
 
-Do not broad reverse the APK again. Highest-value gaps are narrow:
+Broad APK reverse is no longer the highest-value work for Train/Revive/Sell/Chat.
 
-1. prove per-LD bridge can resolve/read semantic state repeatedly without destabilizing game;
-2. prove harmless MainThread callback/action path;
-3. capture/recover exact outbound revive producer and payload;
-4. capture/recover exact shop-open + sell request producer and payload;
-5. verify return-to-train sequence across map transitions;
-6. test multi-instance isolation and no shared stale state.
+Remaining important runtime proofs:
+
+1. stable per-LD read-only resolver/snapshot;
+2. harmless MainThread action bridge;
+3. one normal revive acceptance/completion using mobile-proven `200063:"1"`;
+4. one mobile vendor path -> current non-guild NPCShop -> one safe `200036` sell -> removal proof;
+5. chosen healer runtime dialog text/result;
+6. chat acceptance/rate-limit behavior for desired channels;
+7. cross-map return-to-train and multi-LD isolation soak test.
