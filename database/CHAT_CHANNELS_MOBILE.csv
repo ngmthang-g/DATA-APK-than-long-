@@ -1,0 +1,13 @@
+name,id,ui_can_chat,notes
+Default,-1,false,default/system-like content
+System,0,false,system
+System_Broad_Chat,1,false,system marquee/broadcast
+Guild,2,true,guild
+Allies,3,true,alliance
+Team,4,true,party/team
+Near,5,true,nearby
+Faction,6,true,faction/school
+Private,7,true,requires target RoleID/name
+Global,8,true,world/global
+Special,9,true,special channel
+CrossServer,10,true,cross-server
