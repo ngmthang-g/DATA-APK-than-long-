@@ -1,32 +1,31 @@
 # Auto Tool API Catalog — Mobile
 
-Evidence here is primarily exact metadata-name presence; signature/runtime ownership is refined during resolver tests.
+This catalog now includes exact mobile metadata signatures/source usage where recovered.
 
-| Domain | Symbol/API | Static status | Intended use |
+| Domain | API/symbol | Mobile status | Tool use |
 |---|---|---|---|
-| player | `RoleData` | VERIFIED name | local player state root candidate |
-| player | `LuaLeaderData` | VERIFIED name | leader/player shared data candidate |
-| vital | `CurrentHP`, `MaxHP`, `IsDeath` | VERIFIED names | survival/death state |
-| map | `MapID`, `PosX`, `PosY`, `Position` | VERIFIED names | location snapshot |
-| map | `IsMapReady` | VERIFIED name | transition guard/proof |
-| map | `GetCurrentMoveDestination` | VERIFIED name | path progress |
-| world | `GetLocalMapObjects`, `GetNearbyObjects` | VERIFIED names | environment scan |
-| target | `SelectedTarget` | VERIFIED name | target snapshot |
-| target | `GetNearByEnemies` | VERIFIED name | train candidate scan |
-| target | `GetNearbySpritesWithPredicate` | VERIFIED name | filtered sprite scan donor |
-| player scan | `GetNearByPeacePlayers` | VERIFIED name | nearby player scan donor |
-| combat | `SelectTarget` | VERIFIED name | select semantic target |
-| combat | `ChaseTarget` | VERIFIED name | move/chase target |
-| combat | `UseSkill`, `RequestUsingSkill*` | VERIFIED names | semantic skill request |
-| combat | `GetSkillCooldown`, `GetBuffs`, `GetSkillLuaData` | VERIFIED names | cooldown/buff/skill metadata |
-| movement | `MoveTo`, `MoveToEx`, `GoTo` | VERIFIED names | semantic travel |
-| path | `AutoPathManager`, `StartAutoPath`, `StopAutoPath`, `IsAutoPathing` | VERIFIED names | auto-route control/status |
-| NPC | `GetNPCPosition`, `ClickNPC` | VERIFIED names | vendor/service route |
-| bag | `GetFreeBagSpace` | VERIFIED name | bag threshold |
-| bag | `GetItemsAtSite`, `GetItems`, `GetItemData`, `GetItemAtSite`, `GetTotalItems`, `CountItem` | VERIFIED names | live inventory scan |
-| item | `IsItemSellable`, `GetItemBasePrice`, `GetItemType`, `GetEquipType`, `IsItemThrowable` | VERIFIED names | keep/sell policy |
-| network | `SendPacketToServer`, `SendPacket`, `TCPGame`, `TCPOutPacket` | VERIFIED names | exact action producer trace |
-| revive | `CMD_REVIVE`, `ProcessObjectDeath`, `ProcessObjectRevive` | VERIFIED names | revive research/state |
-| thread | `MainThread` | RECONFIRMED | safe semantic action dispatch candidate |
+| role | `Game.RoleData` / `RoleData` | exact source+metadata | main local snapshot |
+| vital | CurrentHP/MaxHP/CurrentMP/MaxMP | exact metadata | survival |
+| death | `LuaLeaderData.IsDeath`, `GRole.IsDeath` | exact metadata | death truth candidates |
+| map | MapID/PosX/PosY/Position, `IsMapReady` | exact source+metadata | transition proof |
+| map | `GetCurrentMoveDestination` | exact metadata | movement progress |
+| movement | `MoveTo`, `MoveToEx`, `GoTo` | exact source+metadata | travel |
+| path | `AutoPathManager.StartAutoPath/StopAutoPath/IsAutoPathing` | exact metadata | route lifecycle |
+| path | `TCPGameEventProcessor.SendAutoPathRequestChangeMap` | exact metadata | producer donor |
+| NPC | `GetNPCPosition`, `ClickNPC` | exact source+metadata | service navigation |
+| world | `GetNearbySpritesWithPredicate` | exact source+metadata | Train target scan |
+| target | `SelectTarget`, `ReloadTarget`, `IsSelectTargetDie`, `ChaseTarget` | exact source+metadata | combat |
+| skill | `GetSkillLuaData`, `GetSkillCooldown`, `RequestUsingSkillWithTarget` | exact source+metadata | combat |
+| bag | `GetFreeBagSpace`, `GetItemsAtSite` | exact metadata/source usage | full threshold/scan |
+| item | `DBItemData.ID/ItemID/Site/Position/Bound/Quantity` | exact metadata | live identity |
+| item | `IsItemSellable`, `GetItemType`, `GetEquipType`, `GetItemBasePrice` | exact source+metadata | keep/sell |
+| dialog | `GameDialog.Selections` runtime map | exact Lua source | semantic NPC action |
+| shop | current `shopData.NpcShopID`, `shopData.ID`, `IsGuildShop` | exact Lua source | sell guard/payload |
+| chat | `WorldToGridPosition`, `RoleData.Position`, `C_ChatChannel` | exact Lua source | @GOTO + channels |
+| network | `LuaSystemAPI_Network.SendPacket` | exact metadata/source usage | semantic packet bridge |
+| network | `TCPGame.SendPacket`, `TCPOutPacket.MakeTCPOutPacket` | exact metadata | lower-level producer |
+| thread | `MainThread.Execute(Action)` | exact metadata member map | safe managed dispatch candidate |
 
-Never infer exact numeric enum/packet values from name presence alone.
+## Exact high-level actions
+
+See `database/AUTO_ACTION_EXACT_FLOWS.md` before searching native code.
