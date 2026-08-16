@@ -11,6 +11,14 @@ Evidence statuses below refer to the frozen mobile APK.
 | NPC route | `GetNPCPosition -> GoTo -> ClickNPC` / shipped `GoToNPC` | STATIC-SOLVED | current dialog/shop |
 | Select/chase | `SelectTarget`, `ChaseTarget` | STATIC-SOLVED | current target/movement |
 | Skill on target | `RequestUsingSkillWithTarget(skillID,RoleID)` | STATIC-SOLVED | cooldown/combat/server state |
+| Pick ground item | `PickUpItemFromItemPack(itemPackID,slotIndex,UsingAuto)` | STATIC-SOLVED / RUNTIME-PROOF | bag/item-pack state changes |
+| Trigger Sell from bag | `GetFreeBagSpace() <= configured threshold` | STATIC-SOLVED state policy | transition ownership, no pickup conflict |
+| Use medicine/item | `100005`, `3:itemInstanceID` | STATIC-SOLVED / RUNTIME-PROOF | HP/MP/item/cooldown change |
+| Abandon item | `100005`, `4:itemInstanceID` | STATIC-SOLVED / RUNTIME-PROOF | removal/fresh bag; require `IsItemThrowable` + explicit policy |
+| Move item to site | `100005`, `5:itemInstanceID:destinationSite` | STATIC-SOLVED / RUNTIME-PROOF | item site changes |
+| Merge items | `100005`, `7:id1;id2;...` | STATIC-SOLVED | fresh quantities/instances |
+| Split item | `100005`, `8:itemInstanceID:quantity` | STATIC-SOLVED | new instances/quantities |
+| Destroy items | `100005`, `9:id1;id2;...` | STATIC-SOLVED but DANGEROUS | removal proof; explicit narrow opt-in only |
 | Normal revive | `Network.SendPacket(200063,"1")` | STATIC-SOLVED / RUNTIME-PROOF | alive/HP/revival/map state |
 | Newbie revive | `200063:"2"` | STATIC-SOLVED | revive state |
 | Skill revive | `200063:"3"` | STATIC-SOLVED | revive state |
@@ -20,7 +28,16 @@ Evidence statuses below refer to the frozen mobile APK.
 | Send chat | `100008`, object `{RoleID,Name,Content=Base64(text),Channel}` | STATIC-SOLVED / RUNTIME-PROOF | inbound/visible/server response |
 | Send location ping | append `@GOTO_MapID_GridX_GridY`, then normal chat | STATIC-SOLVED / RUNTIME-PROOF | received clickable location |
 
-## Item guards for Sell
+## Item/survival guards
+
+```text
+use current DBItemData.ID, never stale/template identity
+configured HP/MP medicine is reserved from Sell/Drop/Destroy
+Abandon requires Game.IsItemThrowable(ItemID) plus user's explicit policy
+bulk Destroy is disabled by default
+```
+
+## Sell guards
 
 ```text
 40000000 <= ItemID < 50000000 -> do not sell
@@ -35,4 +52,4 @@ current shop must not be guild shop
 fresh snapshot -> guard -> ONE mutable action -> concrete proof -> fresh snapshot
 ```
 
-Do not invoke response handlers as requests and do not run Train combat actions concurrently with Sell/Heal/Revive ownership.
+Do not invoke response handlers as requests. Do not run Train/pickup actions concurrently with Sell/Heal/Revive ownership. Do not copy shipped AutoDrop/AutoUsing switches as proof that those engines are implemented; see `analysis/23_STOCK_SOURCE_DEFECTS_TO_AVOID.md`.
