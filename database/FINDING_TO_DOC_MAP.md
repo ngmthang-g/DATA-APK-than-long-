@@ -10,25 +10,32 @@ Use this file to jump from one concrete implementation question to the smallest 
 | decrypted Lua/UI corpus | `analysis/11_INTERFACE_BUNDLE_DECRYPTION.md` |
 | packet 80 vs 200063 / command layers | `analysis/12_PACKET_LAYERS_AND_LUA_PROTOCOL.md`, `database/PACKET_IDS_LUA_MOBILE.csv` |
 | HP/map/position/death/bag snapshot | `analysis/18_RUNTIME_ROLE_BAG_SNAPSHOT.md`, `contexts/BUILD_RUNTIME_SCANNER.md` |
-| transient GameDialog/NPCShop/Revival/bag events | `analysis/26_LUA_PACKET_EVENT_OBSERVER.md` |
+| transient GameDialog/NPCShop/Revival/bag events | `analysis/26_LUA_PACKET_EVENT_OBSERVER.md`, `analysis/28_DYNAMIC_TRANSACTION_SNAPSHOT_CONTRACT.md` |
 | EXE controls LD9 APK / process binding | `analysis/25_ANDROID_MANIFEST_PROCESS_BINDING.md`, `analysis/05_LD9_HOST_GUEST_ARCHITECTURE.md` |
 | guest Lua/UI semantic bridge | `analysis/24_LUA_UI_ACTION_BRIDGE_BLUEPRINT.md`, `contexts/BUILD_MAINTHREAD_BRIDGE.md` |
 | MainThread / crash from wrong action thread | `analysis/07_MAIN_THREAD_DISPATCHER.md` |
 | map/path/cross-map/return/NPC route | `analysis/03_WORLD_ENTITY_MAP_PATH.md` |
+| visible grid X/Y vs movement world X/Y | `analysis/29_COORDINATE_DOMAINS_GRID_WORLD.md` |
 | built-in Train exact flow | `analysis/13_BUILTIN_AUTO_TRAIN_ENGINE.md`, `features/AUTO_TRAIN.md` |
+| target/quái/nearby-player runtime schema | `analysis/32_RUNTIME_TARGET_SCANNER.md` |
 | loot/pickup/bag-full Sell trigger | `analysis/22_LOOT_BAG_FULL_AND_SELL_TRIGGER.md` |
 | HP/MP medicine / Use item | `analysis/20_ITEM_ACTIONS_AND_AUTO_RECOVERY.md`, `features/AUTO_RECOVERY.md` |
 | Abandon/Move/Destroy item | `analysis/20_ITEM_ACTIONS_AND_AUTO_RECOVERY.md`, `database/ITEM_ACTIONS_MOBILE.csv` |
+| bag scanner row fields/name/type/star/price | `analysis/31_BAG_SCANNER_DATA_CONTRACT.md` |
+| Bag/Storage/Fashion/etc. site IDs | `database/ITEM_SITES_MOBILE.csv` |
+| exact equipment position / weapon=0 | `database/EQUIP_POSITIONS_MOBILE.csv`, `database/AUTO_SELL_CLASSIFICATION.md` |
 | stock auto bugs/stale toggles | `analysis/23_STOCK_SOURCE_DEFECTS_TO_AVOID.md` |
-| revive packet + return map | `analysis/14_REVIVE_RETURN_MAP_ENGINE.md`, `features/AUTO_REVIVE.md` |
+| revive packet + countdown + return map | `analysis/14_REVIVE_RETURN_MAP_ENGINE.md`, `features/AUTO_REVIVE.md` |
 | shop/sell exact request | `analysis/15_INVENTORY_NPCSHOP_AUTO_SELL.md`, `features/AUTO_SELL.md` |
 | classify KEEP vs SELL safely | `database/AUTO_SELL_CLASSIFICATION.md` |
+| scan NPC names/positions vs stable npcID | `analysis/30_NPC_DISCOVERY_IDENTITY_RUNTIME.md` |
 | NPC Trị liệu / dynamic GameDialog | `analysis/16_GAMEDIALOG_NPC_TREATMENT.md`, `features/AUTO_HEAL_NPC.md` |
 | Auto Chat / actual channel ID / @GOTO | `analysis/17_CHAT_CHANNEL_AND_GOTO_AUTOMATION.md`, `features/AUTO_CHAT.md` |
 | built-in mobile AutoSettings 3.5 | `database/BUILTIN_AUTO_SETTINGS_MOBILE.md` |
 | external per-LD profile/settings | `database/EXE_PER_LD_PROFILE_SCHEMA.md` |
 | Lua function lookup without opening whole script | `database/AUTO_LUA_FUNCTION_CATALOG.csv` |
 | exact action quick lookup | `database/AUTO_ACTION_EXACT_FLOWS.md`, `database/AUTO_TOOL_ACTION_CATALOG.md` |
+| packet/event proof lookup | `database/RUNTIME_EVENTS_MOBILE.csv` |
 | state→guard→action→proof orchestration | `analysis/27_AUTO_STATE_ACTION_PROOF_MATRIX.md` |
 | multiple LD state arbitration | `analysis/19_LD9_ACTION_ORCHESTRATION.md`, `features/AUTO_ORCHESTRATOR.md` |
 | packaged APK lacks full PC-style Config tables | `analysis/21_PACKAGED_RESOURCE_BOUNDARY.md` |
