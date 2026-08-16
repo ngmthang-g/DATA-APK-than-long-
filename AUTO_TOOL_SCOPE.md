@@ -18,31 +18,52 @@ A single Windows `ThanLongAuto.exe` manages multiple LDPlayer 9 instances. Each 
 
 ### Auto Train
 
-- identify nearby enemies;
-- select/chase/use skills or invoke built-in semantic train flow if recovered;
-- keep train origin/radius;
-- stop/yield for higher-priority recovery/sell states;
+- prefer shipped semantic Train engine where practical;
+- target scan/select/chase/skill/loot;
+- train origin/radius/return-center;
+- yield for higher-priority Revive/Heal/Sell states;
 - resume after recovery.
 
-### Death recovery
+### Death recovery / return map
 
-- detect death from semantic state;
-- wait for valid revive availability/state if required;
-- issue exactly one revive request;
-- prove alive/map-ready;
-- route back to saved train spot;
-- resume train.
+- semantic death detection;
+- one exact normal revive request;
+- alive/map-ready proof;
+- return to saved train spot;
+- resume Train.
 
-### Auto Sell
+### Auto HP/MP / survival
 
-- use `GetFreeBagSpace` rather than counting UI cells;
-- scan live Bag items;
-- apply keep/sell policy using semantic item data;
-- route to configured/current vendor NPC semantically;
-- establish current shop state;
-- sell one live item instance at a time;
-- prove removal/update, rescan;
+- identify HP/MP medicine semantically;
+- use live bag instance ID through `CMD_ITEM_ACTION`;
+- one action -> state/item proof -> rescan;
+- reserve configured recovery items from sell/drop filters.
+
+### Inventory / Auto Sell / item policy
+
+- `GetFreeBagSpace` and live Bag scan rather than cell OCR;
+- keep/sell/drop/destroy/move policy using semantic item fields;
+- preserve `IsItemSellable` / `IsItemThrowable` and quest-item guards;
+- destructive `Destroy` only when explicitly configured;
+- route to current vendor, require normal NPCShop;
+- sell one current item instance at a time and prove removal;
 - return to train spot.
+
+### NPC / Trị liệu
+
+- route by NPC ID with `GetNPCPosition -> GoTo -> ClickNPC`;
+- inspect current `GameDialog.Selections`;
+- match current visible treatment/service text;
+- use actual live selection ID;
+- prove HP/money/dialog result.
+
+### Auto Chat / ping tọa độ
+
+- semantic channel send through `CMD_CLIENT_CHAT`;
+- Base64 message content;
+- `@GOTO_<MapID>_<GridX>_<GridY>` location ping;
+- preserve client practical length limit and implement conservative rate limiting;
+- no Windows focus/keyboard dependency when semantic send works.
 
 ### Multi-LD orchestration
 
@@ -73,6 +94,7 @@ hardcoded LD screen coordinates
 fixed sleep as action success proof
 PC RVA copied into ARM64 mobile
 one global mutable queue shared by all emulators
+unbounded packet/action spam
 ```
 
 Fallback input may exist only for a genuinely unexposed UI edge and must be isolated from semantic state truth.
