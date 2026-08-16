@@ -1,22 +1,11 @@
-# Context Pack — Build Full Orchestrator
+# Context pack — Build multi-feature/multi-LD orchestrator
 
-## Required
+Read:
 
-- `features/AUTO_ORCHESTRATOR.md`
-- `analysis/05_LD9_HOST_GUEST_ARCHITECTURE.md`
-- `database/RUNTIME_SNAPSHOT_SCHEMA.md`
-- `contexts/BUILD_AUTO_TRAIN.md`
-- `contexts/BUILD_AUTO_REVIVE.md`
-- `contexts/BUILD_AUTO_SELL.md`
+1. `analysis/19_LD9_ACTION_ORCHESTRATION.md`
+2. `analysis/18_RUNTIME_ROLE_BAG_SNAPSHOT.md`
+3. `features/AUTO_ORCHESTRATOR.md`
+4. `database/AUTO_ACTION_EXACT_FLOWS.md`
+5. `research/AUTO_RUNTIME_PROOF_QUEUE.md`
 
-Use this pack when work spans Train + Revive + Sell. Do not independently preload every analysis file.
-
-## Core contract
-
-Per PID/session:
-
-```text
-Snapshot -> priority decision -> one ActionGate mutation -> proof -> fresh Snapshot
-```
-
-Keep feature state independent across LD9 instances.
+Then open the one feature deep doc for the transition being implemented. Do not load all feature internals at once.
