@@ -1,31 +1,50 @@
 {"id":"apk.sha256","platform":"android-arm64","snapshot":"ThanLongMobile_2024.apk","evidence":"VERIFIED","value":"9de719391c29d50816a3762f758abe26896cab4d996706711b30fdc10d9933f0","source":"uploaded APK"}
 {"id":"apk.size","platform":"android-arm64","evidence":"VERIFIED","value":77318940,"unit":"bytes"}
-{"id":"il2cpp.metadata.version","platform":"android-arm64","evidence":"VERIFIED","value":39,"source":"global-metadata.dat header 0x27"}
-{"id":"il2cpp.binary","platform":"android-arm64","evidence":"VERIFIED","value":"lib/arm64-v8a/libil2cpp.so","size":90658536}
-{"id":"il2cpp.metadata","platform":"android-arm64","evidence":"VERIFIED","value":"assets/bin/Data/Managed/Metadata/global-metadata.dat","size":14475116}
-{"id":"assembly.csharp.present","platform":"android-arm64","evidence":"VERIFIED","value":true,"source":"ScriptingAssemblies.json"}
-{"id":"api.bag.free_space","evidence":"VERIFIED_NAME","value":"GetFreeBagSpace"}
-{"id":"api.bag.items_at_site","evidence":"VERIFIED_NAME","value":"GetItemsAtSite"}
-{"id":"api.item.sellable","evidence":"VERIFIED_NAME","value":"IsItemSellable"}
-{"id":"api.item.type","evidence":"VERIFIED_NAME","value":"GetItemType"}
-{"id":"api.equip.type","evidence":"VERIFIED_NAME","value":"GetEquipType"}
-{"id":"api.npc.position","evidence":"VERIFIED_NAME","value":"GetNPCPosition"}
-{"id":"api.npc.click","evidence":"VERIFIED_NAME","value":"ClickNPC"}
-{"id":"api.move.goto","evidence":"VERIFIED_NAME","value":"GoTo"}
-{"id":"api.move.move_to","evidence":"VERIFIED_NAME","value":"MoveTo"}
-{"id":"api.path.start","evidence":"VERIFIED_NAME","value":"StartAutoPath"}
-{"id":"api.path.stop","evidence":"VERIFIED_NAME","value":"StopAutoPath"}
-{"id":"api.target.enemies","evidence":"VERIFIED_NAME","value":"GetNearByEnemies"}
-{"id":"api.target.select","evidence":"VERIFIED_NAME","value":"SelectTarget"}
-{"id":"api.target.chase","evidence":"VERIFIED_NAME","value":"ChaseTarget"}
-{"id":"api.skill.request_target","evidence":"VERIFIED_NAME","value":"RequestUsingSkillWithTarget"}
-{"id":"api.skill.cooldown","evidence":"VERIFIED_NAME","value":"GetSkillCooldown"}
-{"id":"state.death","evidence":"VERIFIED_NAME","value":"IsDeath"}
-{"id":"revive.command_name","evidence":"VERIFIED_NAME","value":"CMD_REVIVE"}
-{"id":"revive.packet_numeric","evidence":"TARGETED_PROOF","value":null,"pc_donor":200063}
-{"id":"sell.packet_numeric","evidence":"TARGETED_PROOF","value":null,"pc_donor":200036}
-{"id":"mainthread.class","evidence":"RECONFIRMED","value":"FGStudio.Engine.Utilities.MainThread"}
-{"id":"asset.load_crypto","evidence":"VERIFIED_NAME","value":"LoadWithCrypto"}
+{"id":"unity.version","platform":"android-arm64","evidence":"VERIFIED","value":"6000.3.6f1"}
+{"id":"il2cpp.metadata.version","platform":"android-arm64","evidence":"VERIFIED","value":39}
+{"id":"il2cpp.type_count","evidence":"VERIFIED","value":15667}
+{"id":"il2cpp.method_count","evidence":"VERIFIED","value":130649}
+{"id":"il2cpp.field_count","evidence":"VERIFIED","value":68049}
+{"id":"source_paths.cs_count","evidence":"VERIFIED","value":1186}
+{"id":"interface.textasset_count","evidence":"VERIFIED","value":631,"source":"decrypted Interface.unity3d"}
+{"id":"packet.layers","evidence":"VERIFIED","value":["EngineCore TCPGameServerCmds","LuaGameplay G_TCPPacketDefine"]}
+{"id":"auto.mode.train","evidence":"VERIFIED_STATIC","value":1}
+{"id":"auto.train.start","evidence":"VERIFIED_STATIC","value":"AutoFight_Main:StartAutoFight(C_AutoModel.Train)"}
+{"id":"auto.train.target_scan","evidence":"VERIFIED_STATIC","value":"Game.GetNearbySpritesWithPredicate"}
+{"id":"auto.train.cast","evidence":"VERIFIED_STATIC","value":"Game.RequestUsingSkillWithTarget(skillID,RoleID)"}
+{"id":"revive.packet","evidence":"VERIFIED_STATIC","value":200063,"name":"CMD_REVIVE_DATA"}
+{"id":"revive.normal.payload","evidence":"VERIFIED_STATIC","value":"1"}
+{"id":"revive.newbie.payload","evidence":"VERIFIED_STATIC","value":"2"}
+{"id":"revive.skill.payload","evidence":"VERIFIED_STATIC","value":"3"}
+{"id":"revive.engine_command","evidence":"VERIFIED_STATIC","value":80,"name":"CMD_REVIVE","note":"separate low-level command layer"}
+{"id":"bag.site","evidence":"VERIFIED_STATIC","value":10,"name":"Bag"}
+{"id":"sell.packet","evidence":"VERIFIED_STATIC","value":200036,"name":"CMD_NPC_SHOP_SELL_REQUEST"}
+{"id":"sell.payload","evidence":"VERIFIED_STATIC","value":"itemInstanceID:NpcShopID:ShopID"}
+{"id":"sell.instance_field","evidence":"VERIFIED_STATIC","value":"DBItemData.ID"}
+{"id":"shop.data.packet","evidence":"VERIFIED_STATIC","value":200034,"name":"CMD_NPC_SHOP_DATA"}
+{"id":"shop.guild_sell_guard","evidence":"VERIFIED_STATIC","value":"shopData.IsGuildShop == false"}
+{"id":"dialog.packet","evidence":"VERIFIED_STATIC","value":100007,"name":"CMD_SHOW_GAMEDIALOG"}
+{"id":"dialog.payload","evidence":"VERIFIED_STATIC","value":"selectionID:SelectedItemID"}
+{"id":"dialog.default_selected_item","evidence":"VERIFIED_STATIC","value":-1}
+{"id":"chat.packet","evidence":"VERIFIED_STATIC","value":100008,"name":"CMD_CLIENT_CHAT"}
+{"id":"chat.payload_object","evidence":"VERIFIED_STATIC","value":["RoleID","Name","Content=Base64(text)","Channel"]}
+{"id":"chat.goto.format","evidence":"VERIFIED_STATIC","value":"@GOTO_<MapID>_<GridX>_<GridY>"}
+{"id":"chat.channel.near","evidence":"VERIFIED_STATIC","value":5}
+{"id":"chat.channel.team","evidence":"VERIFIED_STATIC","value":4}
+{"id":"chat.channel.guild","evidence":"VERIFIED_STATIC","value":2}
+{"id":"chat.channel.global","evidence":"VERIFIED_STATIC","value":8}
+{"id":"npc.route","evidence":"VERIFIED_STATIC","value":"GetNPCPosition -> GoTo -> ClickNPC"}
+{"id":"api.bag.free_space","evidence":"VERIFIED","value":"GetFreeBagSpace"}
+{"id":"api.bag.items_at_site","evidence":"VERIFIED","value":"GetItemsAtSite"}
+{"id":"api.item.sellable","evidence":"VERIFIED","value":"IsItemSellable"}
+{"id":"api.npc.position","evidence":"VERIFIED","value":"GetNPCPosition"}
+{"id":"api.npc.click","evidence":"VERIFIED","value":"ClickNPC"}
+{"id":"api.move.goto","evidence":"VERIFIED","value":"GoTo"}
+{"id":"api.target.select","evidence":"VERIFIED","value":"SelectTarget"}
+{"id":"api.target.chase","evidence":"VERIFIED","value":"ChaseTarget"}
+{"id":"api.skill.request_target","evidence":"VERIFIED","value":"RequestUsingSkillWithTarget"}
+{"id":"mainthread.class","evidence":"VERIFIED_METADATA","value":"FGStudio.Engine.Utilities.MainThread"}
+{"id":"mainthread.execute","evidence":"VERIFIED_METADATA","value":"Execute(System.Action)","token":"0x0600295A"}
 {"id":"security.emulator_detect","evidence":"VERIFIED_EXPORT","value":"FG_EmuDetect"}
 {"id":"security.adb_observable","evidence":"VERIFIED_EXPORT","value":["FG_IsAdbEnabled","FG_IsAdbReallyEnabled"]}
 {"id":"architecture.host","evidence":"DESIGN","value":"Windows EXE -> per-LD BotSession -> guest ARM64 bridge -> IL2CPP semantic state/action"}
