@@ -11,10 +11,11 @@ Mục tiêu là xây **Windows EXE quản lý nhiều LDPlayer 9**, mỗi LD9 ch
 - đọc tên nhân vật/RoleID/HP/MaxHP/map/tọa độ/death;
 - đọc target/quái xung quanh;
 - di chuyển/path/đổi map/quay lại bãi;
-- bật/tắt/điều phối train;
-- quét tay nải và phân loại item;
-- mở NPC/shop và bán an toàn;
-- hồi sinh/đầu thai;
+- bật/tắt/điều phối Train;
+- Auto HP/MP bằng item semantic;
+- quét tay nải, phân loại, bán/vứt/xóa/chuyển item an toàn;
+- mở NPC/shop/GameDialog, bán và trị liệu;
+- Auto Chat và ping tọa độ;
 - điều phối nhiều LD9 mà action không tranh chấp;
 - proof hành động thành công để tránh spam/diss/crash.
 
@@ -33,29 +34,25 @@ Mục tiêu bình thường: đọc khoảng 5–10 tài liệu liên quan, khô
 
 ## Evidence levels
 
-- `VERIFIED` — có bằng chứng trực tiếp từ APK/metadata/native export/config hoặc runtime capture cụ thể.
-- `RECONFIRMED` — fact từ parse trước đã được kiểm tra lại bằng artifact hiện tại.
-- `PROBABLE` — suy luận mạnh nhưng thiếu exact association/payload/runtime proof.
-- `PC-DONOR` — fact đã verified trên PC, hữu ích để định hướng mobile nhưng **không tự động đúng trên APK**.
-- `TARGETED-PROOF` — đã biết chính xác cần test gì trên LD9 để nâng cấp fact.
-- `HYPOTHESIS` — hướng nghiên cứu, chưa dùng làm logic production.
+- `VERIFIED` / `VERIFIED_STATIC` — bằng chứng trực tiếp từ APK/metadata/native/recovered Lua/UI.
+- `RUNTIME-PROOF` — exact static action đã biết nhưng cần chứng minh an toàn/acceptance trên LD9.
+- `PC-DONOR` — fact PC hữu ích để tìm mobile nhưng không tự động là mobile fact.
+- `HYPOTHESIS` — hướng nghiên cứu chưa dùng làm production truth.
 
-Không được tự nâng `PC-DONOR/PROBABLE` thành `VERIFIED`.
+Không được tự nâng `PC-DONOR/HYPOTHESIS` thành VERIFIED.
 
 ## Rule chống reverse lan man
 
-Nếu exact fact đã tồn tại trong `research/VERIFIED_APK_SNAPSHOT.md`, `database/FACTS.jsonl` hoặc catalog thì dùng fact đó. Chỉ phân tích binary/asset sâu hơn khi task hiện tại thật sự thiếu thông tin.
+Nếu exact fact đã tồn tại trong `database/FACTS.jsonl`, action/API catalog hoặc canonical analysis thì dùng fact đó. Chỉ phân tích binary/asset sâu hơn khi task hiện tại thật sự thiếu thông tin.
 
 ## Rule chống bê offset PC sang APK
-
-PC và mobile có nhiều dấu hiệu chung codebase, nhưng:
 
 ```text
 PC = Windows x64 / GameAssembly.dll
 Mobile = Android ARM64 / libil2cpp.so
 ```
 
-Tên namespace/class/method/protocol semantic có thể đối chiếu. **Absolute offset/RVA/pointer layout không được copy 1:1.** Resolver mobile phải dựa IL2CPP metadata/runtime hoặc signature riêng cho snapshot mobile.
+Tên namespace/class/method/protocol semantic có thể đối chiếu. **Absolute offset/RVA/pointer layout không được copy 1:1.**
 
 ## Canonical per-LD architecture
 
@@ -72,63 +69,63 @@ Resolver
  -> Fresh snapshot
 ```
 
-Read-only observers có thể chạy song song. Mutable action trong cùng một game instance không được cạnh tranh.
+Không share live pointer, action queue, selected target, current shop/dialog hoặc cached item instance ID giữa các LD9.
 
-## Multi-LD hard rules
+## High-value exact mobile facts
 
-Mỗi instance giữ riêng:
+Recovered Interface Lua + IL2CPP metadata independently verify:
 
 ```text
-LD index / ADB serial
-Windows emulator PID/window
-Android game PID
-resolver cache
-snapshot version/world generation
-character identity
-train profile
-sell profile
-feature state
-last action/proof
-error/retry counters
+C_AutoModel.Train = 1
+AutoFight_Main:StartAutoFight(C_AutoModel.Train)
+
+CMD_REVIVE_DATA = 200063
+normal revive payload = "1"
+
+C_ItemSite.Bag = 10
+CMD_NPC_SHOP_SELL_REQUEST = 200036
+sell payload = DBItemData.ID:NpcShopID:ShopID
+
+CMD_SHOW_GAMEDIALOG = 100007
+payload = selectionID:SelectedItemID
+
+CMD_CLIENT_CHAT = 100008
+Content = Base64(text)
+location token = @GOTO_<MapID>_<GridX>_<GridY>
+
+CMD_ITEM_ACTION = 100005
+Use=3
+Abandon=4
+Move=5
+Destroy=9
 ```
 
-Không share live pointer, action queue, selected target, shop state hay cached item instance ID giữa các LD9.
+Useful semantic APIs include:
+
+```text
+GetFreeBagSpace / GetItemsAtSite / IsItemSellable / IsItemThrowable
+GetNPCPosition / ClickNPC
+MoveTo / MoveToEx / GoTo
+GetNearbySpritesWithPredicate
+SelectTarget / ChaseTarget
+GetSkillLuaData / GetSkillCooldown / RequestUsingSkillWithTarget
+IsMapReady / GetCurrentMoveDestination
+RoleData / LuaLeaderData.IsDeath
+LuaSystemAPI_Network.SendPacket
+MainThread.Execute(System.Action)
+```
 
 ## MainThread rule
 
-Metadata có `FGStudio.Engine.Utilities.MainThread`; nghiên cứu trước đã thấy mô hình `Execute(Action)`/queue/Unity Update giống client PC. Trước production write-action cần proof live harmless callback trên LD9. Mutable Unity/Lua call không được gọi tùy tiện từ host worker thread.
-
-## Current high-value VERIFIED names
-
-Static metadata hiện tại chứa các tên:
-
-```text
-LuaSystemAPI_Game
-LuaSystemManager
-LuaSystemAPI_Network
-MainThread
-RoleData / LuaLeaderData
-GetFreeBagSpace
-GetItemsAtSite / GetItems / GetItemData / GetItemAtSite / GetTotalItems / CountItem
-IsItemSellable / GetItemBasePrice / IsItemSellToShopWithBoundMoney
-GetNPCPosition / ClickNPC
-MoveTo / MoveToEx / GoTo
-AutoPathManager / StartAutoPath / StopAutoPath / IsAutoPathing
-SendAutoPathRequestChangeMap
-GetNearByEnemies / SelectTarget / ChaseTarget
-UseSkill / RequestUsingSkill / RequestUsingSkillWithTarget / RequestUsingSkillWithPos
-IsMapReady / GetCurrentMoveDestination / GetLocalMapObjects / GetNearbyObjects
-IsDeath / ProcessObjectDeath / ProcessObjectRevive / CMD_REVIVE
-SendPacketToServer / SendPacket / TCPGame / TCPOutPacket / PacketCmdID
-```
-
-Tên tồn tại không tự chứng minh payload hoặc runtime-call safety; đọc feature/context tương ứng.
+Exact `MainThread` member map is statically recovered. Before production mutations, prove one harmless managed Action callback on a live LD9 with correct lifetime/thread. Do not invoke Unity/Lua mutable action from arbitrary guest worker threads.
 
 ## Security/emulator caution
 
-`libFGClientTool_Android.so` export các surface như `FG_EmuDetect`, `FG_GetEmuScore`, `FG_IsAdbEnabled`, `FG_IsAdbReallyEnabled`, `FG_GetEnabledAccessibilityServices`, `FG_CanDrawOverlays`, `FG_GetSecurityReport`, input metrics/tap hooks.
+`libFGClientTool_Android.so` exposes emulator/ADB/accessibility/overlay/security-report surfaces. This proves observability, not a block condition. Research may document behavior and stability but must not attempt security/anti-cheat bypass.
 
-Điều này không chứng minh LD9 bị block, nhưng có nghĩa thiết kế không nên giả định emulator/ADB/accessibility/overlay là vô hình.
+## Resource boundary
+
+`Interface.unity3d` contains the valuable Lua/UI corpus. Decrypted Shared/LoadingResources/Logo are mainly graphical resources; base `data.unity3d` exposes runtime types/resources but not the full PC-style Config database. Use PC Config only as donor identity until mobile downloaded/runtime data confirms it.
 
 ## Mandatory next step
 
