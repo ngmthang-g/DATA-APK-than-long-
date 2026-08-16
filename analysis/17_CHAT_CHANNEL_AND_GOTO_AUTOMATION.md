@@ -1,6 +1,6 @@
 # Chat, channel selection and coordinate ping automation
 
-Status: **OUTBOUND CHAT + @GOTO FORMAT VERIFIED STATIC**
+Status: **OUTBOUND CHAT + @GOTO FORMAT VERIFIED STATIC; external scheduling/orchestration required**
 
 ## Exact chat packet
 
@@ -22,6 +22,27 @@ Channel = channelID
 and sends it through `Network.SendPacket(100008, packetData)`.
 
 An internal tool therefore does not need to focus the LD window or synthesize keyboard input for ordinary chat.
+
+## No stock Auto-Chat sender found
+
+Corpus-wide search of the 631 recovered Interface TextAssets finds `CMD_CLIENT_CHAT` only in:
+
+```text
+TCPPacketDefine.txt
+ChatBox.lua
+```
+
+`AutoFight_Main` stores utility fields such as:
+
+```text
+ChatSelect
+ChatCostumeChannel
+ChatSelectSend
+```
+
+but those functions are channel/custom-channel/last-selection persistence helpers. No periodic or event-driven `CMD_CLIENT_CHAT` send loop was found in the recovered stock AutoFight source.
+
+Therefore **Auto Chat is an external EXE orchestration feature**, not a reliable built-in auto toggle. The EXE can still reuse the exact semantic packet producer.
 
 ## Channel IDs
 
@@ -81,4 +102,6 @@ SendChat(channel,text,privateRoleID?,privateName?)
 SendLocationPing(channel,optionalPrefixText)
 ```
 
-No Windows focus/keyboard dependency is needed. Use one action gate and a conservative rate limiter. Do not attempt to bypass server chat limits or moderation.
+The Windows host may schedule periodic messages or trigger messages from state-machine events (death, vendor trip, spot switch, user hotkey), but every send should still pass through the per-session action/rate gate.
+
+No Windows focus/keyboard dependency is needed. Do not attempt to bypass server chat limits or moderation.
