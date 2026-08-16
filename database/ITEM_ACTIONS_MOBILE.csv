@@ -1,0 +1,7 @@
+action_name,value,packet,payload,status,safety_guard
+Use,3,100005,3:itemInstanceID,VERIFIED_STATIC,live bag instance and intended usable item
+Abandon,4,100005,4:itemInstanceID,VERIFIED_STATIC,Game.IsItemThrowable(ItemID) plus explicit drop policy
+Move,5,100005,5:itemInstanceID:destinationSite,VERIFIED_STATIC,valid live instance and destination site
+Merge,7,100005,7:id1;id2;...,VERIFIED_STATIC,matching mergeable instances
+Split,8,100005,8:itemInstanceID:quantity,VERIFIED_STATIC,quantity > 1 and valid split amount
+Destroy,9,100005,9:id1;id2;...,VERIFIED_STATIC,destructive; explicit narrowly scoped policy only
