@@ -1,15 +1,11 @@
-# Context Pack — Build Auto Revive
+# Context pack — Build Auto Revive / return map
 
-## Required
+Read:
 
-- `features/AUTO_REVIVE.md`
-- `analysis/02_LUA_GAME_UI_NETWORK_API.md`
-- `analysis/03_WORLD_ENTITY_MAP_PATH.md`
-- `research/AUTO_RUNTIME_PROOF_QUEUE.md`
-- `database/AUTO_TOOL_ACTION_CATALOG.md`
+1. `analysis/14_REVIVE_RETURN_MAP_ENGINE.md`
+2. `features/AUTO_REVIVE.md`
+3. `database/AUTO_ACTION_EXACT_FLOWS.md`
+4. `research/AUTO_RUNTIME_PROOF_QUEUE.md`
+5. `analysis/19_LD9_ACTION_ORCHESTRATION.md`
 
-## Critical boundary
-
-`CMD_REVIVE` name exists, but numeric outbound command/payload is not yet mobile VERIFIED.
-
-Before coding production revive, complete the queued manual one-action trace and record exact result proof.
+Do not re-discover packet/payload: normal mobile revive is statically solved as `200063:"1"`.
