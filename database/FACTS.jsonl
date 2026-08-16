@@ -1,0 +1,31 @@
+{"id":"apk.sha256","platform":"android-arm64","snapshot":"ThanLongMobile_2024.apk","evidence":"VERIFIED","value":"9de719391c29d50816a3762f758abe26896cab4d996706711b30fdc10d9933f0","source":"uploaded APK"}
+{"id":"apk.size","platform":"android-arm64","evidence":"VERIFIED","value":77318940,"unit":"bytes"}
+{"id":"il2cpp.metadata.version","platform":"android-arm64","evidence":"VERIFIED","value":39,"source":"global-metadata.dat header 0x27"}
+{"id":"il2cpp.binary","platform":"android-arm64","evidence":"VERIFIED","value":"lib/arm64-v8a/libil2cpp.so","size":90658536}
+{"id":"il2cpp.metadata","platform":"android-arm64","evidence":"VERIFIED","value":"assets/bin/Data/Managed/Metadata/global-metadata.dat","size":14475116}
+{"id":"assembly.csharp.present","platform":"android-arm64","evidence":"VERIFIED","value":true,"source":"ScriptingAssemblies.json"}
+{"id":"api.bag.free_space","evidence":"VERIFIED_NAME","value":"GetFreeBagSpace"}
+{"id":"api.bag.items_at_site","evidence":"VERIFIED_NAME","value":"GetItemsAtSite"}
+{"id":"api.item.sellable","evidence":"VERIFIED_NAME","value":"IsItemSellable"}
+{"id":"api.item.type","evidence":"VERIFIED_NAME","value":"GetItemType"}
+{"id":"api.equip.type","evidence":"VERIFIED_NAME","value":"GetEquipType"}
+{"id":"api.npc.position","evidence":"VERIFIED_NAME","value":"GetNPCPosition"}
+{"id":"api.npc.click","evidence":"VERIFIED_NAME","value":"ClickNPC"}
+{"id":"api.move.goto","evidence":"VERIFIED_NAME","value":"GoTo"}
+{"id":"api.move.move_to","evidence":"VERIFIED_NAME","value":"MoveTo"}
+{"id":"api.path.start","evidence":"VERIFIED_NAME","value":"StartAutoPath"}
+{"id":"api.path.stop","evidence":"VERIFIED_NAME","value":"StopAutoPath"}
+{"id":"api.target.enemies","evidence":"VERIFIED_NAME","value":"GetNearByEnemies"}
+{"id":"api.target.select","evidence":"VERIFIED_NAME","value":"SelectTarget"}
+{"id":"api.target.chase","evidence":"VERIFIED_NAME","value":"ChaseTarget"}
+{"id":"api.skill.request_target","evidence":"VERIFIED_NAME","value":"RequestUsingSkillWithTarget"}
+{"id":"api.skill.cooldown","evidence":"VERIFIED_NAME","value":"GetSkillCooldown"}
+{"id":"state.death","evidence":"VERIFIED_NAME","value":"IsDeath"}
+{"id":"revive.command_name","evidence":"VERIFIED_NAME","value":"CMD_REVIVE"}
+{"id":"revive.packet_numeric","evidence":"TARGETED_PROOF","value":null,"pc_donor":200063}
+{"id":"sell.packet_numeric","evidence":"TARGETED_PROOF","value":null,"pc_donor":200036}
+{"id":"mainthread.class","evidence":"RECONFIRMED","value":"FGStudio.Engine.Utilities.MainThread"}
+{"id":"asset.load_crypto","evidence":"VERIFIED_NAME","value":"LoadWithCrypto"}
+{"id":"security.emulator_detect","evidence":"VERIFIED_EXPORT","value":"FG_EmuDetect"}
+{"id":"security.adb_observable","evidence":"VERIFIED_EXPORT","value":["FG_IsAdbEnabled","FG_IsAdbReallyEnabled"]}
+{"id":"architecture.host","evidence":"DESIGN","value":"Windows EXE -> per-LD BotSession -> guest ARM64 bridge -> IL2CPP semantic state/action"}

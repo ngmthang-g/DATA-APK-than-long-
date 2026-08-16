@@ -1,0 +1,12 @@
+MOBILE APK RESEARCH RULES
+
+1. Read AI_INDEX.md / database / VERIFIED knowledge before reverse-engineering.
+2. Do not broad-reverse the APK when the exact fact already exists.
+3. PC repo is a semantic donor only. Never copy PC x64 RVA/offset to Android ARM64.
+4. Never mark a PC packet ID/payload VERIFIED on mobile without mobile producer/runtime evidence.
+5. Prefer IL2CPP semantic resolution and game APIs over OCR/pixel scanning.
+6. Preserve evidence levels: VERIFIED / RECONFIRMED / PROBABLE / PC-DONOR / TARGETED-PROOF / HYPOTHESIS.
+7. Each LDPlayer instance owns independent state, pointers, action gate, profile and proof history.
+8. Mutable game actions require safe game-thread/MainThread dispatch proof; no competing actions inside one PID.
+9. Fixed sleeps are not success proof. Verify real map/HP/item/shop/target state and rescan.
+10. Do not build or document bypasses for Captcha/security/anti-cheat. Pause or surface the condition instead.

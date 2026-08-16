@@ -1,0 +1,17 @@
+concept,pc_knowledge,mobile_evidence,mobile_status
+IL2CPP game API,LuaSystemAPI_Game,LuaSystemAPI_Game,VERIFIED_NAME
+MainThread,FGStudio.Engine.Utilities.MainThread,MainThread/FGStudio namespace evidence,RECONFIRMED
+nearby peaceful players,GetNearByPeacePlayers,GetNearByPeacePlayers,VERIFIED_NAME
+train sprite scan,GetNearbySpritesWithPredicate,GetNearbySpritesWithPredicate,VERIFIED_NAME
+selected target,SelectedTarget,SelectedTarget,VERIFIED_NAME
+movement,MoveTo/GoTo,MoveTo/MoveToEx/GoTo,VERIFIED_NAME
+NPC route,GetNPCPosition/ClickNPC,GetNPCPosition/ClickNPC,VERIFIED_NAME
+bag free space,GetFreeBagSpace,GetFreeBagSpace,VERIFIED_NAME
+bag item scan,GetItemsAtSite,GetItemsAtSite,VERIFIED_NAME
+item sellability,IsItemSellable,IsItemSellable,VERIFIED_NAME
+skill cooldown,GetSkillCooldown,GetSkillCooldown,VERIFIED_NAME
+buffs,GetBuffs,GetBuffs,VERIFIED_NAME
+revive packet,PC exact 200063,CMD_REVIVE name only,PC_DONOR_TARGETED_PROOF
+sell packet,PC exact 200036,network+inventory primitives only,PC_DONOR_TARGETED_PROOF
+built-in Train,AutoFight_Main StartAutoFight,exact standalone names not found in current pass,PC_DONOR_UNVERIFIED
+binary address,Windows x64 RVA,Android ARM64 libil2cpp.so,DO_NOT_REUSE
