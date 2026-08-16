@@ -1,70 +1,32 @@
-# Feature Specification — Auto Train (Mobile / LD9)
+# Feature — Auto Train / Đánh quái
 
-Status: **STATIC-STRONG primitives; high-level built-in Train entrypoint not yet verified on mobile**.
+Status: **MOBILE SEMANTIC ENGINE SOLVED STATIC; live action safety proof pending**
 
-## Required state
-
-Per BotSession:
+## Canonical start/stop
 
 ```text
-Alive / IsDeath
-MapID
-Position
-IsMapReady
-SelectedTarget
-nearby enemy candidates
-train origin/map/radius
-skill/cooldown state if using low-level combat
-current higher-priority feature state
+C_AutoModel.Train = 1
+GUI.FindUI("AutoFight_Main"):StartAutoFight(C_AutoModel.Train)
 ```
 
-Static metadata provides names supporting these requirements, including `GetNearByEnemies`, `GetNearbySpritesWithPredicate`, `SelectedTarget`, `SelectTarget`, `ChaseTarget`, `UseSkill`, `RequestUsingSkill*`, `GetSkillCooldown`, movement/path APIs and map-ready state.
+Yield/stop through mode None rather than clicking the visible settings tab.
 
-## Preferred architecture
+## Built-in engine owns
 
-Do not make Windows screen clicks the normal combat engine.
+- train center and `RangerScan`;
+- monster scan with `GetNearbySpritesWithPredicate`;
+- death/ignored target filters;
+- optional monster whitelist;
+- path/range checks;
+- target select/chase;
+- skill selection/cast;
+- loot integration;
+- return-to-center;
+- recovery from stale/unreachable targets;
+- optional death comeback donor.
 
-If a verified high-level built-in Train entrypoint is recovered, prefer it when it safely encapsulates target/chase/skill/loot behavior. Otherwise build a narrow semantic loop from exposed Game APIs.
+## Production policy
 
-## Low-level semantic loop
+External EXE should not duplicate a second combat loop while the shipped Train engine is active. The host orchestrator should own transitions such as Revive/Sell/Heal/spot switching, then resume Train.
 
-```text
-fresh snapshot
- -> if dead: yield to REVIVE
- -> if wrong map/outside return tolerance: yield to RETURN_TO_SPOT
- -> if current Sell transaction: yield
- -> choose current reachable enemy
- -> one SelectTarget/Chase/Skill action
- -> proof from fresh target/player state
- -> rescan
-```
-
-## Target policy
-
-Do not cache object pointers across map/world generation changes. Keep stable IDs/ResIDs only when their semantics are confirmed.
-
-## Skill policy
-
-Use semantic skill request methods and cooldown state. Do not spam skill requests on a fixed timer when target/death/map/busy state says the previous action is not complete.
-
-## PC donor
-
-PC KB has solved `AutoFight_Main:StartAutoFight(C_AutoModel.Train)`. Current mobile exact-string pass did not confirm standalone `AutoFight_Main`/`StartAutoFight`.
-
-Status remains `PC-DONOR / TARGETED-PROOF`, not mobile fact.
-
-## Completion/health proof
-
-Train is considered active only from semantic state/action evidence, not because the visible Auto button looks enabled.
-
-## Failure handoff
-
-Priority:
-
-```text
-manual/security pause
- > death/revive
- > map return
- > current sell transaction
- > normal train
-```
+Canonical deep doc: `analysis/13_BUILTIN_AUTO_TRAIN_ENGINE.md`.
