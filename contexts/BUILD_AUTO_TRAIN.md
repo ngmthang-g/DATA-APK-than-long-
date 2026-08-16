@@ -1,18 +1,11 @@
-# Context Pack — Build Auto Train
+# Context pack — Build Auto Train mobile
 
-## Required
+Read:
 
-- `features/AUTO_TRAIN.md`
-- `analysis/02_LUA_GAME_UI_NETWORK_API.md`
-- `analysis/03_WORLD_ENTITY_MAP_PATH.md`
-- `database/AUTO_TOOL_API_CATALOG.md`
-- `database/AUTO_TOOL_ACTION_CATALOG.md`
-- `contexts/BUILD_MAINTHREAD_BRIDGE.md` once mutable actions begin
+1. `analysis/13_BUILTIN_AUTO_TRAIN_ENGINE.md`
+2. `features/AUTO_TRAIN.md`
+3. `database/AUTO_TOOL_API_CATALOG.md`
+4. `database/AUTO_TOOL_ACTION_CATALOG.md`
+5. `analysis/19_LD9_ACTION_ORCHESTRATION.md`
 
-## Do not assume
-
-Do not assume PC `AutoFight_Main:StartAutoFight` exists on mobile until recovered.
-
-## Minimum viable semantic Train
-
-Use fresh enemy/target/map/death state and one select/chase/skill action at a time. Yield immediately to revive or return-to-map state.
+Do not re-reverse the Train start entrypoint: `C_AutoModel.Train=1` and `StartAutoFight(Train)` are mobile source-verified.
