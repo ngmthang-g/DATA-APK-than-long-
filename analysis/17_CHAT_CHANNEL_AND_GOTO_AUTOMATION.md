@@ -16,12 +16,30 @@ CMD_CLIENT_CHAT = 100008
 RoleID  = private target RoleID (unused for normal channels)
 Name    = private target name
 Content = String.ToBase64(content)
-Channel = channelID
+Channel = actual channelID
 ```
 
 and sends it through `Network.SendPacket(100008, packetData)`.
 
 An internal tool therefore does not need to focus the LD window or synthesize keyboard input for ordinary chat.
+
+## UI dropdown index is NOT the server channel ID
+
+Stock source first reads:
+
+```text
+selectedChannelIndex = SelectChatChannelDropdown.SelectedID
+```
+
+Then it iterates `C_ChatChannels` entries where `CanChat=true` and translates that UI index to:
+
+```text
+channelID = channelData.Channels[1]
+```
+
+Only this final `channelID` goes into the packet.
+
+Therefore an external EXE should store/use **actual `C_ChatChannel` IDs**, not a ChatBox dropdown index or the legacy AutoSettings `ChatSelect` value unless that UI preference has been explicitly translated.
 
 ## No stock Auto-Chat sender found
 
@@ -44,7 +62,7 @@ but those functions are channel/custom-channel/last-selection persistence helper
 
 Therefore **Auto Chat is an external EXE orchestration feature**, not a reliable built-in auto toggle. The EXE can still reuse the exact semantic packet producer.
 
-## Channel IDs
+## Actual channel IDs
 
 ```text
 Default          -1
@@ -81,11 +99,42 @@ CharacterLimit = 200
 
 The location button refuses to append the `@GOTO_...` token when current text + token would exceed this client UI limit. An external semantic sender should preserve the same practical 200-character envelope unless runtime evidence shows the server safely accepts another limit.
 
+## Other stock semantic attachment tokens
+
+Before Base64 conversion, stock source can append:
+
+```text
+@ITEM_<live item DBID>
+@PET_<pet DBID>
+```
+
+These are useful protocol evidence but are not needed for basic Auto Chat/Ping. Do not attach stale item/pet IDs across session/bag generations.
+
 ## Clickable navigation on receiver
 
-Chat rendering recognizes a `GoTo_<map>_<x>_<y>` link, converts grid coordinates back to world coordinates and registers a click callback that calls `Game.GoTo(mapID,worldX,worldY)`.
+Chat rendering recognizes generated rich-text links matching:
 
-This proves location ping is a semantic client feature, not a screenshot/mouse trick.
+```text
+<link="GoTo_<mapID>_<gridX>_<gridY>">
+```
+
+`GF_SetChatAction` parses the values, converts grid coordinates with:
+
+```text
+Game.GridToWorldPosition(gridX,gridY)
+```
+
+and registers a click callback:
+
+```text
+Game.GoTo(mapID,worldX,worldY)
+```
+
+The raw sender token is `@GOTO_...`; the richer `<link="GoTo_...">` form is produced before/display-side handling. This proves location ping is a semantic client feature, not a screenshot/mouse trick.
+
+## Private chat guard
+
+For actual channel `Private=7`, stock source requires `G_PrivateChatData.RoleID != -1`. An external private-message action must supply the intended live RoleID/name and should not reuse a stale private target from another session.
 
 ## Local cooldown finding
 
@@ -98,8 +147,8 @@ This **does not prove there is no server-side anti-spam/cooldown**. Treat server
 Per LD9 session expose:
 
 ```text
-SendChat(channel,text,privateRoleID?,privateName?)
-SendLocationPing(channel,optionalPrefixText)
+SendChat(actualChannelID,text,privateRoleID?,privateName?)
+SendLocationPing(actualChannelID,optionalPrefixText)
 ```
 
 The Windows host may schedule periodic messages or trigger messages from state-machine events (death, vendor trip, spot switch, user hotkey), but every send should still pass through the per-session action/rate gate.
